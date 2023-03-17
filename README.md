@@ -29,8 +29,8 @@ Ambos os gatos precisam, através de interações com os habitantes do lugar, at
 - Os gatos não podem sair do mapa.
 
 ## Receita
-Propagandas ao final de cada jogo;
-Dicas pagas.
+- Propagandas ao final de cada jogo;
+- Dicas pagas.
 
 
 
