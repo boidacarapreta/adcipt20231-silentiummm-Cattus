@@ -33,5 +33,3 @@ Ambos os gatos precisam, através de interações com os habitantes do lugar, at
 - Dicas pagas.
 
 
-
-
