@@ -1,7 +1,25 @@
 {
+  "name": "cattus",
+  "version": "1.0.0",
+  "description": "Jogo web com suporte a webrtc",
+  "main": "servidor.js",
   "dependencies": {
     "express": "^4.18.2"
-  }
+  },
+  "scripts": {
+    "start": "node servidor.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/silentiummm/Cattus.git"
+  },
+  "keywords": [
+    "webrtc"
+  ],
+  "author": "Gustavo da Luz <gustavo.l10@aluno.ifsc.edu.br>, Isabela Louise Coelho <isabela.l2003@aluno.ifsc.edu.br>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/silentiummm/Cattus/issues"
+  },
+  "homepage": "https://github.com/silentiummm/Cattus#readme"
 }
-
-
