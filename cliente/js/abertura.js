@@ -1,19 +1,32 @@
 export default class CenaDeAbertura extends Phaser.Scene {
-    constructor() {
-      super("abertura");
-    }
-  
-    preload() {
-      // Carregamento de arquivos/objetos em memória (desenhos aqui)
-    }
-  
-    create() {
-      // Carregar em tela e/ou
-      // Registrar eventos
-    }
+  constructor() {
+    super("abertura");
+  }
 
-    update() {
-      // Código executado a cada frame 
-    }
+  preload() {
+    this.load.image("teste1", "./assets/teste 1.webp");
+    // Carregamento de arquivos/objetos em memória (desenhos aqui)
+  }
+
+  create() {
+    // Carregar em tela e/ou
+    // Registrar eventos
+    this.imagem = this.add
+      .image(400, 225, "teste1")
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.imagem.destroy();
+        this.texto.destroy();
+        this.game.scene.start("principal");
+      });
+  
+    this.texto = this.add.text(490, 50, "Clique no prédio para entrar...", {
+      fill: "#ffffff",
+
+    });
   }
   
+  update() {
+    // Código executado a cada frame
+  }
+}
