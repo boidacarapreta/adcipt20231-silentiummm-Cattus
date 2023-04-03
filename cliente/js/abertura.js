@@ -20,7 +20,7 @@ export default class CenaDeAbertura extends Phaser.Scene {
         this.game.scene.start("principal");
       });
   
-    this.texto = this.add.text(490, 50, "Clique no prédio para entrar...", {
+    this.texto = this.add.text(490, 50, "Clique no nariz do gato para entrar...", {
       fill: "#ffffff",
 
     });
