@@ -31,9 +31,45 @@ export default class principal extends Phaser.Scene {
       key: "mapa-inicial",
     });
     // Tilesets
-    this.tileset_principal_terreo_parede =
-      this.mapa_inicial.addTilesetImage("tijolos", "tijolos");
-    
+    this.tileset_principal_terreo_chao = this.mapa_inicial.addTilesetImage(
+      "chao",
+      "chao"
+    );
+    this.tileset_principal_terreo_parede = this.mapa_inicial.addTilesetImage(
+      "tijolos",
+      "tijolos"
+    );
+
+    // Layer 0: chão
+    this.chao = this.mapa_principal_terreo.createLayer(
+      "chao",
+      this.tileset_principal_terreo_chao,
+      0,
+      0
+    );
+    // Layer 1: parede
+    this.parede = this.mapa_principal_terreo.createLayer(
+      "parede",
+      this.tileset_principal_terreo_parede,
+      0,
+      0
+    );
+
+    // Layer 0: chão
+    this.chao = this.mapa_principal_terreo.createLayer(
+      "chao",
+      this.tileset_principal_terreo_chao,
+      0,
+      0
+    );
+    // Layer 1: parede
+    this.parede = this.mapa_principal_terreo.createLayer(
+      "parede",
+      this.tileset_principal_terreo_parede,
+      0,
+      0
+    );
+
     this.jogador_1 = this.physics.add.sprite(200, 225, "gato-1");
     //
     this.anims.create({
