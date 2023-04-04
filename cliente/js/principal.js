@@ -30,11 +30,7 @@ export default class principal extends Phaser.Scene {
     this.mapa_inicial = this.make.tilemap({
       key: "mapa-inicial",
     });
-    // Tilesets
-    this.tileset_principal_terreo_chao = this.mapa_inicial.addTilesetImage(
-      "chao",
-      "chao"
-    );
+
     this.tileset_principal_terreo_parede = this.mapa_inicial.addTilesetImage(
       "tijolos",
       "tijolos"
@@ -49,22 +45,7 @@ export default class principal extends Phaser.Scene {
     );
     // Layer 1: parede
     this.parede = this.mapa_inicial.createLayer(
-      "parede",
-      this.tileset_principal_terreo_parede,
-      0,
-      0
-    );
-
-    // Layer 0: chão
-    this.chao = this.mapa_inicial.createLayer(
-      "chao",
-      this.tileset_principal_terreo_chao,
-      0,
-      0
-    );
-    // Layer 1: parede
-    this.parede = this.mapa_inicial.createLayer(
-      "parede",
+      "tijolos",
       this.tileset_principal_terreo_parede,
       0,
       0
