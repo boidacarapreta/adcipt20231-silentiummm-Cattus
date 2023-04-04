@@ -41,14 +41,14 @@ export default class principal extends Phaser.Scene {
     );
 
     // Layer 0: chão
-    this.chao = this.mapa_principal_terreo.createLayer(
+    this.chao = this.mapa_inicial.createLayer(
       "chao",
       this.tileset_principal_terreo_chao,
       0,
       0
     );
     // Layer 1: parede
-    this.parede = this.mapa_principal_terreo.createLayer(
+    this.parede = this.mapa_inicial.createLayer(
       "parede",
       this.tileset_principal_terreo_parede,
       0,
@@ -56,14 +56,14 @@ export default class principal extends Phaser.Scene {
     );
 
     // Layer 0: chão
-    this.chao = this.mapa_principal_terreo.createLayer(
+    this.chao = this.mapa_inicial.createLayer(
       "chao",
       this.tileset_principal_terreo_chao,
       0,
       0
     );
     // Layer 1: parede
-    this.parede = this.mapa_principal_terreo.createLayer(
+    this.parede = this.mapa_inicial.createLayer(
       "parede",
       this.tileset_principal_terreo_parede,
       0,
