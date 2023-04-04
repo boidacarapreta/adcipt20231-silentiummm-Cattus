@@ -4,18 +4,36 @@ export default class principal extends Phaser.Scene {
   }
 
     preload() {
-    this.load.spritesheet("gato-1", "./assets/gato1-inteiro.png", {
-      frameWidth: 64,
-      frameHeight: 64,
-    });
-    //
-    this.load.spritesheet("gato-2", "./assets/gato2-inteiro.png", {
-      frameWidth: 64,
-      frameHeight: 64,
-    });
-  }
+      // Mapa
+      // Tilemap
+      this.load.tilemapTiledJSON(
+        "mapa-inicial",
+        "./assets/mapa1.json"
+      );
+      // Tilesets
+      this.load.image("tijolos", "./assets/tijolos.png");
+      //
+      this.load.spritesheet("gato-1", "./assets/gato1-inteiro.png", {
+        frameWidth: 64,
+        frameHeight: 64,
+      });
+      //
+      this.load.spritesheet("gato-2", "./assets/gato2-inteiro.png", {
+        frameWidth: 64,
+        frameHeight: 64,
+      });
+    }
 
   create() {
+    // Mapa
+    // Tilemap
+    this.mapa_inicial = this.make.tilemap({
+      key: "mapa-inicial",
+    });
+    // Tilesets
+    this.tileset_principal_terreo_parede =
+      this.mapa_inicial.addTilesetImage("tijolos", "tijolos");
+    
     this.jogador_1 = this.physics.add.sprite(200, 225, "gato-1");
     //
     this.anims.create({
@@ -27,7 +45,7 @@ export default class principal extends Phaser.Scene {
       frameRate: 11,
       repeat: -1,
     }),
-    //
+      //
       this.jogador_1.anims.play("gato1-baixo", true);
     //
     this.jogador_2 = this.physics.add.sprite(600, 225, "gato-2");
