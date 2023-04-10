@@ -11,6 +11,11 @@ export default class CenaDeAbertura extends Phaser.Scene {
   create() {
     // Carregar em tela e/ou
     // Registrar eventos
+
+
+    // this.imagem_de_fundo = this.add.image(...)
+    // this.botao = this.add.image(...).setInteractive.on("pointerdown", () => {...})
+
     this.imagem = this.add
       .image(400, 225, "teste1")
       .setInteractive()
