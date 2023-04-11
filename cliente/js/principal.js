@@ -218,16 +218,29 @@ export default class principal extends Phaser.Scene {
         this.jogador_1.anims.play("gato1-parado-baixo");
       })
       .setScrollFactor(0);
-      
+    
+    /* Colisões por tile */
+    //this.tijolos.setCollisionByProperty({ collides: true });
+
+    /* Colisão entre personagem 1 e mapa (por layer) */
+    //this.physics.add.collider(
+    //  this.jogador_1,
+    //  this.tijolos,
+    //  this.collision,
+    //  null,
+    //  this
+    // );
+
+    /* Colisão com os limites da cena */
+    this.jogador_1.setCollideWorldBounds(true);
+
+    /* Cena (960) maior que a tela (800x450) */
+    this.cameras.main.setBounds(0, 0, 960, 960);
+    this.physics.world.setBounds(0, 0, 960, 960);
+    this.cameras.main.startFollow(this.jogador_1);
+
   }
 
   update() {}
 
-  collision() {
-    /* Tremer a tela por 100 ms com baixa intensidade (0.01) */
-    this.cameras.main.shake(100, 0.01);
-
-    /* Vibrar o celular pelos mesmos 100 ms */
-    window.navigator.vibrate([100]);
   }
-}
