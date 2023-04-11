@@ -34,12 +34,12 @@ export default class CenaDeAbertura extends Phaser.Scene {
       .setInteractive()
       .on("pointerdown", () => {
         this.start.setFrame(1);
-        this.imagem.destroy();
-        this.texto.destroy();
-        this.game.scene.start("principal");
       })
       .on("pointerup", () => {
         this.start.setFrame(0);
+        this.imagem.destroy();
+        this.texto.destroy();
+        this.game.scene.start("principal");
       });
   
     this.texto = this.add.text(330, 50, "Clique em Start...", {
