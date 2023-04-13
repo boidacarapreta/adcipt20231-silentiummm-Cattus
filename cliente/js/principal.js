@@ -6,9 +6,14 @@ export default class principal extends Phaser.Scene {
   preload() {
     // Mapa
     // Tilemap
-    this.load.tilemapTiledJSON("mapa-inicial", "./assets/mapa1.json");
+    this.load.tilemapTiledJSON("mapa1", "./assets/mapa1.json");
+
     // Tilesets
-    this.load.image("tijolos", "./assets/tijolos.png");
+
+      // Mapa 1
+        this.load.image("caverna1", "./assets/mapa1/caverna1.png");
+        this.load.image("fundo1", "./assets/mapa1/fundo1.png");
+        this.load.image("plataforma1", "./assets/mapa1/plataforma1.png");
 
     // Corpo do Gato 1
     this.load.spritesheet("gato-1", "./assets/gato1/gato1-inteiro.png", {
@@ -49,7 +54,7 @@ export default class principal extends Phaser.Scene {
     // Mapa
     // Tilemap
     this.mapa_inicial = this.make.tilemap({
-      key: "mapa-inicial",
+      key: "mapa1",
     });
 
     this.tileset_principal_terreo_parede = this.mapa_inicial.addTilesetImage(
