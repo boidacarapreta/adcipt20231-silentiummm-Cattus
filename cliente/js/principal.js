@@ -6,7 +6,7 @@ export default class principal extends Phaser.Scene {
   preload() {
     // Mapa
     // Tilemap
-    this.load.tilemapTiledJSON("mapa1", "./assets/mapa1.json");
+    this.load.tilemapTiledJSON("mapa1", "./assets/mapa1/mapa1.json");
 
     // Tilesets
 
@@ -51,28 +51,73 @@ export default class principal extends Phaser.Scene {
   }
 
   create() {
-    // Mapa
+    // Mapa1
+
     // Tilemap
-    this.mapa_inicial = this.make.tilemap({
+    this.mapa1 = this.make.tilemap({
       key: "mapa1",
     });
 
-    this.tileset_principal_terreo_parede = this.mapa_inicial.addTilesetImage(
-      "tijolos",
-      "tijolos"
+    this.tileset_caverna1 = this.mapa1.addTilesetImage("caverna1", "caverna1");
+
+    this.tileset_fundo1 = this.mapa1.addTilesetImage("fundo1", "fundo1");
+
+    this.tileset_plataforma1 = this.mapa1.addTilesetImage(
+      "plataforma1",
+      "plataforma1"
     );
 
-    // Layer 0: chão
-    this.chao = this.mapa_inicial.createLayer(
-      "chao",
-      this.tileset_principal_terreo_chao,
+    // Layer 0: fundo
+    this.fundo = this.mapa1.createLayer("fundo", this.tileset_fundo1, 0, 0);
+    // Layer 1: fundo_chão
+    this.fundo_chao = this.mapa1.createLayer(
+      "fundo_chao",
+      this.tileset_caverna1,
+      this.tileset_plataforma1,
       0,
       0
     );
-    // Layer 1: parede
-    this.parede = this.mapa_inicial.createLayer(
-      "tijolos",
-      this.tileset_principal_terreo_parede,
+
+    // Layer 2: chão
+    this.chao = this.mapa1.createLayer(
+      "chão",
+      this.tileset_caverna1,
+      this.tileset_plataforma1,
+      0,
+      0
+    );
+
+    // Layer 3: fundo_parede
+    this.fundo_parede = this.mapa1.createLayer(
+      "chão",
+      this.tileset_caverna1,
+      0,
+      0
+    );
+
+    // Layer 4: parede
+    this.parede = this.mapa1.createLayer("parede", this.tileset_caverna1, 0, 0);
+
+    // Layer 5: parede2
+    this.parede2 = this.mapa1.createLayer(
+      "parede2",
+      this.tileset_caverna1,
+      0,
+      0
+    );
+
+    // Layer 6: objetos
+    this.objetos = this.mapa1.createLayer(
+      "objetos",
+      this.tileset_caverna1, this.tileset_plataforma1,
+      0,
+      0
+    );
+
+    // Layer 7: parede3
+    this.parede3 = this.mapa1.createLayer(
+      "parede3",
+      this.tileset_caverna1,
       0,
       0
     );
@@ -223,18 +268,77 @@ export default class principal extends Phaser.Scene {
         this.jogador_1.anims.play("gato1-parado-baixo");
       })
       .setScrollFactor(0);
-    
-    /* Colisões por tile */
-    //this.tijolos.setCollisionByProperty({ collides: true });
 
+    /* Colisões por tile */
+    this.fundo.setCollisionByProperty({ collides: true });
+    this.fundo_chao.setCollisionByProperty({ collides: true });
+    this.chao.setCollisionByProperty({ collides: true });
+    this.fundo_parede.setCollisionByProperty({ collides: true });
+    this.parede.setCollisionByProperty({ collides: true });
+    this.parede2.setCollisionByProperty({ collides: true });
+    this.objetos.setCollisionByProperty({ collides: true });
+    this.parede3.setCollisionByProperty({ collides: true });
+    
     /* Colisão entre personagem 1 e mapa (por layer) */
-    //this.physics.add.collider(
-    //  this.jogador_1,
-    //  this.tijolos,
-    //  this.collision,
-    //  null,
-    //  this
-    // );
+    this.physics.add.collider(
+      this.jogador_1,
+      this.fundo,
+      this.collision,
+      null,
+      this
+     );
+
+   /this.physics.add.collider(
+      this.jogador_1,
+      this.fundo_chao,
+      this.collision,
+      null,
+      this
+    );
+
+    this.physics.add.collider(
+      this.jogador_1,
+      this.chao,
+      this.collision,
+      null,
+      this
+    );
+
+    this.physics.add.collider(
+      this.jogador_1,
+      this.fundo_parede,
+      this.collision,
+      null,
+      this
+    );
+    this.physics.add.collider(
+      this.jogador_1,
+      this.parede,
+      this.collision,
+      null,
+      this
+    );
+    this.physics.add.collider(
+      this.jogador_1,
+      this.parede2,
+      this.collision,
+      null,
+      this
+    );
+    this.physics.add.collider(
+      this.jogador_1,
+      this.parede3,
+      this.collision,
+      null,
+      this
+    );
+    this.physics.add.collider(
+      this.jogador_1,
+      this.objetos,
+      this.collision,
+      null,
+      this
+    );
 
     /* Colisão com os limites da cena */
     this.jogador_1.setCollideWorldBounds(true);
@@ -243,7 +347,6 @@ export default class principal extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, 960, 960);
     this.physics.world.setBounds(0, 0, 960, 960);
     this.cameras.main.startFollow(this.jogador_1);
-
   }
 
   update() {}
