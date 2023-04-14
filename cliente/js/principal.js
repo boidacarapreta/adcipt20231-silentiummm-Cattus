@@ -10,10 +10,10 @@ export default class principal extends Phaser.Scene {
 
     // Tilesets
 
-      // Mapa 1
-        this.load.image("caverna1", "./assets/mapa1/caverna1.png");
-        this.load.image("fundo1", "./assets/mapa1/fundo1.png");
-        this.load.image("plataforma1", "./assets/mapa1/plataforma1.png");
+    // Mapa 1
+    this.load.image("caverna1", "./assets/mapa1/caverna1.png");
+    this.load.image("fundo1", "./assets/mapa1/fundo1.png");
+    this.load.image("plataforma1", "./assets/mapa1/plataforma1.png");
 
     // Corpo do Gato 1
     this.load.spritesheet("gato-1", "./assets/gato1/gato1-inteiro.png", {
@@ -58,73 +58,35 @@ export default class principal extends Phaser.Scene {
       key: "mapa1",
     });
 
-    this.tileset_caverna1 = this.mapa1.addTilesetImage("caverna1", "caverna1");
+    this.tileset_caverna1 = this.mapa1.addTilesetImage(
+      "cave_tileset",
+      "caverna1"
+    );
 
-    this.tileset_fundo1 = this.mapa1.addTilesetImage("fundo1", "fundo1");
+    this.tileset_fundo1 = this.mapa1.addTilesetImage(
+      "bg-layer-2-full-alpha",
+      "fundo1"
+    );
 
     this.tileset_plataforma1 = this.mapa1.addTilesetImage(
-      "plataforma1",
+      "platformertiles",
       "plataforma1"
     );
 
     // Layer 0: fundo
     this.fundo = this.mapa1.createLayer("fundo", this.tileset_fundo1, 0, 0);
-    // Layer 1: fundo_chão
-    this.fundo_chao = this.mapa1.createLayer(
-      "fundo_chao",
-      this.tileset_caverna1,
-      this.tileset_plataforma1,
-      0,
-      0
-    );
 
-    // Layer 2: chão
-    this.chao = this.mapa1.createLayer(
-      "chão",
-      this.tileset_caverna1,
-      this.tileset_plataforma1,
-      0,
-      0
-    );
-
-    // Layer 3: fundo_parede
-    this.fundo_parede = this.mapa1.createLayer(
-      "chão",
-      this.tileset_caverna1,
-      0,
-      0
-    );
-
-    // Layer 4: parede
-    this.parede = this.mapa1.createLayer("parede", this.tileset_caverna1, 0, 0);
-
-    // Layer 5: parede2
-    this.parede2 = this.mapa1.createLayer(
-      "parede2",
-      this.tileset_caverna1,
-      0,
-      0
-    );
-
-    // Layer 6: objetos
-    this.objetos = this.mapa1.createLayer(
-      "objetos",
-      this.tileset_caverna1, this.tileset_plataforma1,
-      0,
-      0
-    );
-
-    // Layer 7: parede3
-    this.parede3 = this.mapa1.createLayer(
-      "parede3",
-      this.tileset_caverna1,
+    // Layer 1: plataformas
+    this.plataformas = this.mapa1.createLayer(
+      "plataformas",
+      [this.tileset_caverna1, this.tileset_plataforma1],
       0,
       0
     );
 
     // Personagem 1
     // Movimentos e Física
-    this.jogador_1 = this.physics.add.sprite(200, 225, "gato-1");
+    this.jogador_1 = this.physics.add.sprite(200, 550, "gato-1");
 
     // Frames Movimentação
     this.anims.create({
@@ -157,8 +119,8 @@ export default class principal extends Phaser.Scene {
       this.anims.create({
         key: "gato1-cima",
         frames: this.anims.generateFrameNumbers("gato-1", {
-          start: 12,
-          end: 15,
+          start: 16,
+          end: 19,
         }),
         frameRate: 11,
         repeat: -1,
@@ -167,8 +129,8 @@ export default class principal extends Phaser.Scene {
       this.anims.create({
         key: "gato1-parado-baixo",
         frames: this.anims.generateFrameNumbers("gato-1", {
-          start: 16,
-          end: 19,
+          start: 28,
+          end: 31,
         }),
         frameRate: 4,
         repeat: -1,
@@ -212,12 +174,12 @@ export default class principal extends Phaser.Scene {
     this.cima = this.add
       .sprite(700, 300, "cima", 0)
       .setInteractive()
-      .on("pointerdown", () => {
+      .on("pointerover", () => {
         this.cima.setFrame(1);
-        this.jogador_1.setVelocityY(-50);
+        this.jogador_1.setVelocityY(-500);
         this.jogador_1.anims.play("gato1-cima");
       })
-      .on("pointerup", () => {
+      .on("pointerout", () => {
         this.cima.setFrame(0);
         this.jogador_1.setVelocityY(0);
         this.jogador_1.anims.play("gato1-parado-cima");
@@ -227,12 +189,12 @@ export default class principal extends Phaser.Scene {
     this.direita = this.add
       .sprite(760, 350, "direita", 0)
       .setInteractive()
-      .on("pointerdown", () => {
+      .on("pointerover", () => {
         this.direita.setFrame(1);
-        this.jogador_1.setVelocityX(50);
+        this.jogador_1.setVelocityX(200);
         this.jogador_1.anims.play("gato1-direita");
       })
-      .on("pointerup", () => {
+      .on("pointerout", () => {
         this.direita.setFrame(0);
         this.jogador_1.setVelocityX(0);
         this.jogador_1.anims.play("gato1-parado-direita");
@@ -242,99 +204,42 @@ export default class principal extends Phaser.Scene {
     this.esquerda = this.add
       .sprite(640, 350, "esquerda", 0)
       .setInteractive()
-      .on("pointerdown", () => {
+      .on("pointerover", () => {
         this.esquerda.setFrame(1);
-        this.jogador_1.setVelocityX(-50);
+        this.jogador_1.setVelocityX(-200);
         this.jogador_1.anims.play("gato1-esquerda");
       })
-      .on("pointerup", () => {
+      .on("pointerout", () => {
         this.esquerda.setFrame(0);
         this.jogador_1.setVelocityX(0);
         this.jogador_1.anims.play("gato1-parado-esquerda");
       })
       .setScrollFactor(0);
 
+    /*
     this.baixo = this.add
       .sprite(700, 400, "baixo", 0)
       .setInteractive()
-      .on("pointerdown", () => {
+      .on("pointerover", () => {
         this.baixo.setFrame(1);
-        this.jogador_1.setVelocityY(50);
+        this.jogador_1.setVelocityY(300);
         this.jogador_1.anims.play("gato1-baixo");
       })
-      .on("pointerup", () => {
+      .on("pointerout", () => {
         this.baixo.setFrame(0);
         this.jogador_1.setVelocityY(0);
         this.jogador_1.anims.play("gato1-parado-baixo");
-      })
+      })No data found for Tileset: plataforma1
       .setScrollFactor(0);
+    */
 
     /* Colisões por tile */
-    this.fundo.setCollisionByProperty({ collides: true });
-    this.fundo_chao.setCollisionByProperty({ collides: true });
-    this.chao.setCollisionByProperty({ collides: true });
-    this.fundo_parede.setCollisionByProperty({ collides: true });
-    this.parede.setCollisionByProperty({ collides: true });
-    this.parede2.setCollisionByProperty({ collides: true });
-    this.objetos.setCollisionByProperty({ collides: true });
-    this.parede3.setCollisionByProperty({ collides: true });
-    
+    this.plataformas.setCollisionByProperty({ collides: true });
+
     /* Colisão entre personagem 1 e mapa (por layer) */
     this.physics.add.collider(
       this.jogador_1,
-      this.fundo,
-      this.collision,
-      null,
-      this
-     );
-
-   /this.physics.add.collider(
-      this.jogador_1,
-      this.fundo_chao,
-      this.collision,
-      null,
-      this
-    );
-
-    this.physics.add.collider(
-      this.jogador_1,
-      this.chao,
-      this.collision,
-      null,
-      this
-    );
-
-    this.physics.add.collider(
-      this.jogador_1,
-      this.fundo_parede,
-      this.collision,
-      null,
-      this
-    );
-    this.physics.add.collider(
-      this.jogador_1,
-      this.parede,
-      this.collision,
-      null,
-      this
-    );
-    this.physics.add.collider(
-      this.jogador_1,
-      this.parede2,
-      this.collision,
-      null,
-      this
-    );
-    this.physics.add.collider(
-      this.jogador_1,
-      this.parede3,
-      this.collision,
-      null,
-      this
-    );
-    this.physics.add.collider(
-      this.jogador_1,
-      this.objetos,
+      this.plataformas,
       this.collision,
       null,
       this
@@ -343,12 +248,11 @@ export default class principal extends Phaser.Scene {
     /* Colisão com os limites da cena */
     this.jogador_1.setCollideWorldBounds(true);
 
-    /* Cena (960) maior que a tela (800x450) */
-    this.cameras.main.setBounds(0, 0, 960, 960);
-    this.physics.world.setBounds(0, 0, 960, 960);
+    /* Cena maior que a tela (800x450) */
+    this.cameras.main.setBounds(0, 0, 2496, 640); 
+    this.physics.world.setBounds(0, 0, 2496, 640);
     this.cameras.main.startFollow(this.jogador_1);
   }
 
   update() {}
-
-  }
+}
