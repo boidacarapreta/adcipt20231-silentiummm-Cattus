@@ -74,12 +74,17 @@ export default class principal extends Phaser.Scene {
     );
 
     // Layer 0: fundo
-    this.fundo = this.mapa1.createLayer("fundo", this.tileset_fundo1, 0, 0);
+    this.fundo = this.mapa1.createLayer(
+      "fundo",
+      [this.tileset_caverna1, this.tileset_fundo1, this.tileset_plataforma1],
+      0,
+      0
+    );
 
     // Layer 1: plataformas
     this.plataformas = this.mapa1.createLayer(
       "plataformas",
-      [this.tileset_caverna1, this.tileset_plataforma1],
+      [this.tileset_caverna1, this.tileset_fundo1, this.tileset_plataforma1],
       0,
       0
     );
@@ -249,7 +254,7 @@ export default class principal extends Phaser.Scene {
     this.jogador_1.setCollideWorldBounds(true);
 
     /* Cena maior que a tela (800x450) */
-    this.cameras.main.setBounds(0, 0, 2496, 640); 
+    this.cameras.main.setBounds(0, 0, 2496, 640);
     this.physics.world.setBounds(0, 0, 2496, 640);
     this.cameras.main.startFollow(this.jogador_1);
   }
