@@ -64,6 +64,7 @@ export default class principal extends Phaser.Scene {
   }
 
   create() {
+
     // Mapa1
 
     // Tilemap
@@ -189,7 +190,7 @@ export default class principal extends Phaser.Scene {
 
     // Porta e Chave
 
-    this.porta = this.physics.add.sprite(1000, 550, "porta");
+    this.porta = this.physics.add.sprite(1000, 534, "porta");
     this.porta.body.setAllowGravity(false);
     this.anims.create({
       key: "porta-animada",
@@ -200,11 +201,12 @@ export default class principal extends Phaser.Scene {
       frameRate: 4,
       repeat: -1,
     }),
-      // Animação
-      this.porta.anims.play("porta-animada", true);
+      
+    // Animação
+    this.porta.anims.play("porta-animada", true);
     this.porta.body.setImmovable(true);
 
-    this.chave = this.physics.add.sprite(250, 550, "chave");
+    this.chave = this.physics.add.sprite(50, 585, "chave");
     this.chave.body.setAllowGravity(false);
     this.chave.disableBody(false, true);
 
@@ -315,10 +317,13 @@ export default class principal extends Phaser.Scene {
 
   abrirPorta() {
     if (this.chaves === 0) {
-      this.chave.enableBody(true, 250, 550, true, true);
+      this.chave.enableBody(true, 50, 585, true, true);
+      this.jogador_1.stop;
+
     } else {
       this.porta.anims.stop();
       this.porta.setFrame(5);
+
     }
   }
 
