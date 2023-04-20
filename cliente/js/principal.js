@@ -1,6 +1,7 @@
 export default class principal extends Phaser.Scene {
   constructor() {
     super("principal");
+    this.chaves = 0;
   }
 
   preload() {
@@ -25,6 +26,18 @@ export default class principal extends Phaser.Scene {
     this.load.spritesheet("gato-2", "./assets/gato2-inteiro.png", {
       frameWidth: 64,
       frameHeight: 64,
+    });
+
+    // Objetos
+
+    this.load.spritesheet("chave", "./assets/objetos/chave.png", {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+
+    this.load.spritesheet("porta", "./assets/objetos/porta.png", {
+      frameWidth: 128,
+      frameHeight: 180,
     });
 
     // Botões
@@ -134,8 +147,8 @@ export default class principal extends Phaser.Scene {
       this.anims.create({
         key: "gato1-parado-baixo",
         frames: this.anims.generateFrameNumbers("gato-1", {
-          start: 28,
-          end: 31,
+          start: 20,
+          end: 23,
         }),
         frameRate: 4,
         repeat: -1,
@@ -161,8 +174,8 @@ export default class principal extends Phaser.Scene {
       this.anims.create({
         key: "gato1-parado-cima",
         frames: this.anims.generateFrameNumbers("gato-1", {
-          start: 28,
-          end: 31,
+          start: 17,
+          end: 19,
         }),
         frameRate: 4,
         repeat: -1,
@@ -173,6 +186,27 @@ export default class principal extends Phaser.Scene {
     // Personagem 2
     // Movimentos e Física
     this.jogador_2 = this.add.sprite(600, 225, "gato-2");
+
+    // Porta e Chave
+
+    this.porta = this.physics.add.sprite(1000, 550, "porta");
+    this.porta.body.setAllowGravity(false);
+    this.anims.create({
+      key: "porta-animada",
+      frames: this.anims.generateFrameNumbers("porta", {
+        start: 0,
+        end: 4,
+      }),
+      frameRate: 4,
+      repeat: -1,
+    }),
+      // Animação
+      this.porta.anims.play("porta-animada", true);
+    this.porta.body.setImmovable(true);
+
+    this.chave = this.physics.add.sprite(250, 550, "chave");
+    this.chave.body.setAllowGravity(false);
+    this.chave.disableBody(false, true);
 
     // Botão //
 
@@ -250,6 +284,24 @@ export default class principal extends Phaser.Scene {
       this
     );
 
+    /* Colisão entre jogador 1 e porta */
+    this.physics.add.collider(
+      this.jogador_1,
+      this.porta,
+      this.abrirPorta,
+      null,
+      this
+    );
+
+    /* Colisão entre jogador 1 e chave */
+    this.physics.add.collider(
+      this.jogador_1,
+      this.chave,
+      this.coletarChave,
+      null,
+      this
+    );
+
     /* Colisão com os limites da cena */
     this.jogador_1.setCollideWorldBounds(true);
 
@@ -260,4 +312,18 @@ export default class principal extends Phaser.Scene {
   }
 
   update() {}
+
+  abrirPorta() {
+    if (this.chaves === 0) {
+      this.chave.enableBody(true, 250, 550, true, true);
+    } else {
+      this.porta.anims.stop();
+      this.porta.setFrame(5);
+    }
+  }
+
+  coletarChave() {
+    this.chave.disableBody(true, true);
+    this.chaves += 1;
+  }
 }
