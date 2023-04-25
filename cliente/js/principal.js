@@ -61,9 +61,22 @@ export default class principal extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
+    
+    this.load.spritesheet("tela-cheia", "./assets/botao/tela-cheia.png", {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
+
+    /* Sons */
+    this.load.audio("techno-trilha", "./assets/musicas/techno.mp3");
+    this.load.audio("metal-som", "./assets/musicas/metal.mp3");
   }
 
   create() {
+
+    /* Trilha sonora */
+    this.trilha = this.sound.add("techno-trilha");
+    this.trilha.play();
 
     // Mapa1
 
@@ -190,7 +203,7 @@ export default class principal extends Phaser.Scene {
 
     // Porta e Chave
 
-    this.porta = this.physics.add.sprite(1000, 534, "porta");
+    this.porta = this.physics.add.sprite(2200, 540, "porta");
     this.porta.body.setAllowGravity(false);
     this.anims.create({
       key: "porta-animada",
@@ -201,9 +214,8 @@ export default class principal extends Phaser.Scene {
       frameRate: 4,
       repeat: -1,
     }),
-      
-    // Animação
-    this.porta.anims.play("porta-animada", true);
+      // Animação
+      this.porta.anims.play("porta-animada", true);
     this.porta.body.setImmovable(true);
 
     this.chave = this.physics.add.sprite(50, 585, "chave");
@@ -257,6 +269,20 @@ export default class principal extends Phaser.Scene {
       })
       .setScrollFactor(0);
 
+    this.tela_cheia = this.add
+      .sprite(750, 50, "tela-cheia", 0)
+      .setInteractive()
+      .on("pointerdown", () => {
+        if (this.scale.isFullscreen) {
+          this.tela_cheia.setFrame(0);
+          this.scale.stopFullscreen();
+        } else {
+          this.tela_cheia.setFrame(1);
+          this.scale.startFullscreen();
+        }
+      })
+      .setScrollFactor(0);
+    
     /*
     this.baixo = this.add
       .sprite(700, 400, "baixo", 0)
@@ -322,7 +348,9 @@ export default class principal extends Phaser.Scene {
 
     } else {
       this.porta.anims.stop();
+      this.jogador_1.destroy();
       this.porta.setFrame(5);
+      this.game.scene.start("fase2");
 
     }
   }
