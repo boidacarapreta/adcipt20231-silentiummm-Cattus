@@ -229,7 +229,7 @@ export default class principal extends Phaser.Scene {
       .setInteractive()
       .on("pointerover", () => {
         this.cima.setFrame(1);
-        this.jogador_1.setVelocityY(-500);
+        this.jogador_1.setVelocityY(-300);
         this.jogador_1.anims.play("gato1-cima");
       })
       .on("pointerout", () => {
@@ -345,6 +345,8 @@ export default class principal extends Phaser.Scene {
     if (this.chaves === 0) {
       this.chave.enableBody(true, 50, 585, true, true);
       this.jogador_1.stop;
+      
+      
 
     } else {
       this.porta.anims.stop();
