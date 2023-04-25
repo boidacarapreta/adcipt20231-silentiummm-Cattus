@@ -7,14 +7,15 @@ export default class fase2 extends Phaser.Scene {
   preload() {
     // Mapa
     // Tilemap
-    this.load.tilemapTiledJSON("mapa1", "./assets/mapa1/mapa1.json");
+    this.load.tilemapTiledJSON("mapa2", "./assets/mapa2/mapa2.json");
 
     // Tilesets
 
     // Mapa 1
-    this.load.image("caverna1", "./assets/mapa1/caverna1.png");
-    this.load.image("fundo1", "./assets/mapa1/fundo1.png");
-    this.load.image("plataforma1", "./assets/mapa1/plataforma1.png");
+    this.load.image("fundo-camada1", "./assets/mapa2/fundo-camada1.png");
+    this.load.image("fundo-camada1", "./assets/mapa2/fundo-camada2.png");
+    this.load.image("fundo-camada3", "./assets/mapa2/fundo-camada3.png");
+    this.load.image("plataforma2", "./assets/mapa2/plataforma2.png");
 
     // Corpo do Gato 1
     this.load.spritesheet("gato-1", "./assets/gato1/gato1-inteiro.png", {
@@ -78,47 +79,52 @@ export default class fase2 extends Phaser.Scene {
     this.trilha = this.sound.add("techno-trilha");
     this.trilha.play();
 
-    // Mapa1
+    // Mapa2
 
     // Tilemap
-    this.mapa1 = this.make.tilemap({
-      key: "mapa1",
+    this.mapa2 = this.make.tilemap({
+      key: "mapa2",
     });
 
-    this.tileset_caverna1 = this.mapa1.addTilesetImage(
-      "cave_tileset",
-      "caverna1"
+    this.tileset_camada1 = this.mapa2.addTilesetImage(
+      "fundo-camada1",
+      "fundo-camada1"
     );
 
-    this.tileset_fundo1 = this.mapa1.addTilesetImage(
-      "bg-layer-2-full-alpha",
-      "fundo1"
+    this.tileset_camada2 = this.mapa2.addTilesetImage(
+      "fundo-camada2",
+      "fundo-camada2"
     );
 
-    this.tileset_plataforma1 = this.mapa1.addTilesetImage(
-      "platformertiles",
-      "plataforma1"
+    this.tileset_camada3 = this.mapa2.addTilesetImage(
+      "fundo-camada3",
+      "fundo-camada3"
     );
 
-    // Layer 0: fundo
-    this.fundo = this.mapa1.createLayer(
-      "fundo",
-      [this.tileset_caverna1, this.tileset_fundo1, this.tileset_plataforma1],
+    this.tileset_plataforma2 = this.mapa2.addTilesetImage(
+      "plataforma2",
+      "plataforma2"
+    );
+
+    // Layer 0: fundo 2
+    this.fundo2 = this.mapa2.createLayer(
+      "fundo2",
+      [this.tileset_camada1, this.tileset_camada2, this.tileset_camada3, this.tileset_plataforma2],
       0,
       0
     );
 
-    // Layer 1: plataformas
-    this.plataformas = this.mapa1.createLayer(
-      "plataformas",
-      [this.tileset_caverna1, this.tileset_fundo1, this.tileset_plataforma1],
+    // Layer 1: chão 2
+    this.plataforma2 = this.mapa2.createLayer(
+      "plataforma2",
+      [this.tileset_camada1, this.tileset_camada2, this.tileset_camada3, this.tileset_plataforma2],
       0,
       0
     );
 
     // Personagem 1
     // Movimentos e Física
-    this.jogador_1 = this.physics.add.sprite(200, 550, "gato-1");
+    this.jogador_1 = this.physics.add.sprite(100, 300, "gato-1");
 
     // Frames Movimentação
     this.anims.create({
@@ -301,12 +307,12 @@ export default class fase2 extends Phaser.Scene {
     */
 
     /* Colisões por tile */
-    this.plataformas.setCollisionByProperty({ collides: true });
+    this.plataforma2.setCollisionByProperty({ collides: true });
 
     /* Colisão entre personagem 1 e mapa (por layer) */
     this.physics.add.collider(
       this.jogador_1,
-      this.plataformas,
+      this.plataforma2,
       this.collision,
       null,
       this
