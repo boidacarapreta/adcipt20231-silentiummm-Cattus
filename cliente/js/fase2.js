@@ -220,8 +220,9 @@ export default class fase2 extends Phaser.Scene {
       frameRate: 4,
       repeat: -1,
     }),
-      // Animação
-      this.porta.anims.play("porta-animada", true);
+    
+    // Animação
+    this.porta.anims.play("porta-animada", true);
     this.porta.body.setImmovable(true);
 
     this.chave = this.physics.add.sprite(50, 585, "chave");
@@ -340,7 +341,7 @@ export default class fase2 extends Phaser.Scene {
     this.jogador_1.setCollideWorldBounds(true);
 
     /* Cena maior que a tela (800x450) */
-    this.cameras.main.setBounds(0, 0, 2496, 640);
+    this.cameras.main.setBounds(0, 0, 2696, 640);
     this.physics.world.setBounds(0, 0, 2496, 640);
     this.cameras.main.startFollow(this.jogador_1);
   }
