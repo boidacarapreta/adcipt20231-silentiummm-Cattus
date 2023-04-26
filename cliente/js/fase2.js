@@ -220,7 +220,8 @@ export default class fase2 extends Phaser.Scene {
       frameRate: 4,
       repeat: -1,
     }),
-    
+
+
     // Animação
     this.porta.anims.play("porta-animada", true);
     this.porta.body.setImmovable(true);

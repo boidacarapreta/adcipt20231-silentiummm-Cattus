@@ -85,6 +85,9 @@ export default class principal extends Phaser.Scene {
     this.trilha = this.sound.add("techno-trilha");
     this.trilha.play();
 
+    /* Efeitos sonoros */
+    this.metal_som = this.sound.add("metal-som");
+
     // Mapa1
 
     // Tilemap
@@ -291,23 +294,6 @@ export default class principal extends Phaser.Scene {
         }
       })
       .setScrollFactor(0);
-    
-    /*
-    this.baixo = this.add
-      .sprite(700, 400, "baixo", 0)
-      .setInteractive()
-      .on("pointerover", () => {
-        this.baixo.setFrame(1);
-        this.jogador_1.setVelocityY(300);
-        this.jogador_1.anims.play("gato1-baixo");
-      })
-      .on("pointerout", () => {
-        this.baixo.setFrame(0);
-        this.jogador_1.setVelocityY(0);
-        this.jogador_1.anims.play("gato1-parado-baixo");
-      })No data found for Tileset: plataforma1
-      .setScrollFactor(0);
-    */
 
     /* Colisões por tile */
     this.plataformas.setCollisionByProperty({ collides: true });
@@ -348,14 +334,12 @@ export default class principal extends Phaser.Scene {
     this.cameras.main.startFollow(this.jogador_1);
   }
 
-  update() {}
+  update() {} 
 
   abrirPorta() {
     if (this.chaves === 0) {
       this.chave.enableBody(true, 50, 585, true, true);
       this.jogador_1.stop;
-      
-      
 
     } else {
       this.porta.anims.stop();
@@ -368,6 +352,7 @@ export default class principal extends Phaser.Scene {
 
   coletarChave() {
     this.chave.disableBody(true, true);
+    this.metal_som.play();
     this.chaves += 1;
   }
 }
