@@ -41,6 +41,22 @@ export default class fase2 extends Phaser.Scene {
       frameHeight: 180,
     });
 
+    this.load.spritesheet("porta_entrada", "./assets/objetos/porta_entrada.png", {
+      frameWidth: 128,
+      frameHeight: 180,
+    });
+
+    this.load.spritesheet("interruptor", "./assets/objetos/interruptor.png", {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+
+    this.load.spritesheet("barreira", "./assets/objetos/barreira.png", {
+      frameWidth: 32,
+      frameHeight: 64,
+    });
+
+
     // Botões
 
     this.load.spritesheet("cima", "./assets/botao/cima.png", {
@@ -122,9 +138,25 @@ export default class fase2 extends Phaser.Scene {
       0
     );
 
+    // Porta de Entrada
+
+    this.porta_entrada = this.physics.add.sprite(100, 420, 'porta_entrada');
+    this.porta_entrada.body.setAllowGravity(false);
+
+    // Barreira e interruptor
+
+    this.barreira = this.physics.add.sprite(300, 450, "barreira");
+    this.barreira.body.setAllowGravity(false);
+    this.barreira.body.setImmovable(true);
+        
+    // adicione o botão ao mapa aqui
+    this.interruptor = this.physics.add.sprite(250, 470, 'interruptor');
+    this.interruptor.body.setAllowGravity(false);
+    this.interruptor.body.setImmovable(true);
+
     // Personagem 1
     // Movimentos e Física
-    this.jogador_1 = this.physics.add.sprite(100, 300, "gato-1");
+    this.jogador_1 = this.physics.add.sprite(100, 430, "gato-1");
 
     // Frames Movimentação
     this.anims.create({
@@ -209,7 +241,7 @@ export default class fase2 extends Phaser.Scene {
 
     // Porta e Chave
 
-    this.porta = this.physics.add.sprite(2200, 540, "porta");
+    this.porta = this.physics.add.sprite(2350, 540, "porta");
     this.porta.body.setAllowGravity(false);
     this.anims.create({
       key: "porta-animada",
@@ -221,8 +253,7 @@ export default class fase2 extends Phaser.Scene {
       repeat: -1,
     }),
 
-
-    // Animação
+    // Animação da porta
     this.porta.anims.play("porta-animada", true);
     this.porta.body.setImmovable(true);
 
@@ -291,23 +322,6 @@ export default class fase2 extends Phaser.Scene {
       })
       .setScrollFactor(0);
     
-    /*
-    this.baixo = this.add
-      .sprite(700, 400, "baixo", 0)
-      .setInteractive()
-      .on("pointerover", () => {
-        this.baixo.setFrame(1);
-        this.jogador_1.setVelocityY(300);
-        this.jogador_1.anims.play("gato1-baixo");
-      })
-      .on("pointerout", () => {
-        this.baixo.setFrame(0);
-        this.jogador_1.setVelocityY(0);
-        this.jogador_1.anims.play("gato1-parado-baixo");
-      })No data found for Tileset: plataforma1
-      .setScrollFactor(0);
-    */
-
     /* Colisões por tile */
     this.plataforma2.setCollisionByProperty({ collides: true });
 
@@ -319,6 +333,25 @@ export default class fase2 extends Phaser.Scene {
       null,
       this
     );
+
+    /* Colisão entre personagem 1 e barreira */
+    this.physics.add.collider(
+      this.jogador_1,
+      this.barreira,
+      this.collision,
+      null,
+      this
+    );
+
+    /* Colisão entre jogador 1 e interruptor */
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.interruptor,
+      this.pressionarbotao,
+      null,
+      this
+    );
+
 
     /* Colisão entre jogador 1 e porta */
     this.physics.add.collider(
@@ -347,11 +380,14 @@ export default class fase2 extends Phaser.Scene {
     this.cameras.main.startFollow(this.jogador_1);
   }
 
-  update() {}
+  pressionarbotao() {
+    this.barreira.disableBody(true, true);
+    
+  }
 
   abrirPorta() {
     if (this.chaves === 0) {
-      this.chave.enableBody(true, 50, 585, true, true);
+      this.chave.enableBody(true, 200, 420, true, true);
       this.jogador_1.stop;
 
     } else {

@@ -40,6 +40,14 @@ export default class principal extends Phaser.Scene {
       frameHeight: 180,
     });
 
+    this.load.image("texto", "./assets/objetos/fala.png",
+    );
+
+    this.load.spritesheet("invisivel", "./assets/objetos/interruptor.png", {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+
     // Monstro
 
     this.load.spritesheet("monstro1", "./assets/monstro/monstro1.png", {
@@ -126,12 +134,44 @@ export default class principal extends Phaser.Scene {
       0
     );
 
+    // Texto
+    this.mensagem = this.physics.add.sprite(50, 585, "texto");
+    this.mensagem.body.setAllowGravity(false);
+    this.mensagem.disableBody(false, true);
+
+    // Porta e Chave
+
+    this.porta = this.physics.add.sprite(1100, 540, "porta");
+    this.porta.body.setAllowGravity(false);
+    this.anims.create({
+      key: "porta-animada",
+      frames: this.anims.generateFrameNumbers("porta", {
+        start: 0,
+        end: 4,
+      }),
+      frameRate: 4,
+      repeat: -1,
+    }),
+
+    // Botao Invisivel para setar falas *** Alterar imagem depois
+    this.invisivel = this.physics.add.sprite(50, 585, 'invisivel');
+    this.invisivel.body.setAllowGravity(false);
+    this.invisivel.body.setImmovable(true);
+
+    // Animação
+    this.porta.anims.play("porta-animada", true);
+    this.porta.body.setImmovable(true);
+
+    this.chave = this.physics.add.sprite(50, 585, "chave");
+    this.chave.body.setAllowGravity(false);
+    this.chave.disableBody(false, true);
+
     // Personagem 1
     // Movimentos e Física
     this.jogador_1 = this.physics.add.sprite(200, 550, "gato-1");
 
     // Frames Movimentação
-    this.anims.create({
+      this.anims.create({
       key: "gato1-baixo",
       frames: this.anims.generateFrameNumbers("gato-1", {
         start: 0,
@@ -139,7 +179,7 @@ export default class principal extends Phaser.Scene {
       }),
       frameRate: 11,
       repeat: -1,
-    }),
+      }),
       this.anims.create({
         key: "gato1-esquerda",
         frames: this.anims.generateFrameNumbers("gato-1", {
@@ -210,28 +250,6 @@ export default class principal extends Phaser.Scene {
     // Personagem 2
     // Movimentos e Física
     this.jogador_2 = this.add.sprite(600, 225, "gato-2");
-
-    // Porta e Chave
-
-    this.porta = this.physics.add.sprite(2200, 540, "porta");
-    this.porta.body.setAllowGravity(false);
-    this.anims.create({
-      key: "porta-animada",
-      frames: this.anims.generateFrameNumbers("porta", {
-        start: 0,
-        end: 4,
-      }),
-      frameRate: 4,
-      repeat: -1,
-    }),
-
-    // Animação
-    this.porta.anims.play("porta-animada", true);
-    this.porta.body.setImmovable(true);
-
-    this.chave = this.physics.add.sprite(50, 585, "chave");
-    this.chave.body.setAllowGravity(false);
-    this.chave.disableBody(false, true);
 
 
     // Botão //
@@ -308,10 +326,19 @@ export default class principal extends Phaser.Scene {
     );
 
     /* Colisão entre jogador 1 e porta */
-    this.physics.add.collider(
+    this.physics.add.overlap(
       this.jogador_1,
       this.porta,
       this.abrirPorta,
+      null,
+      this
+    );
+
+    // Colisão para ativar as falas
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.invisivel,
+      this.mensagem1,
       null,
       this
     );
@@ -336,6 +363,10 @@ export default class principal extends Phaser.Scene {
 
   update() {} 
 
+  mensagem1(){
+    this.mensagem.enableBody(true, 400, 350, true, true);
+  }
+
   abrirPorta() {
     if (this.chaves === 0) {
       this.chave.enableBody(true, 50, 585, true, true);
@@ -343,7 +374,6 @@ export default class principal extends Phaser.Scene {
 
     } else {
       this.porta.anims.stop();
-      this.jogador_1.destroy();
       this.porta.setFrame(5);
       this.game.scene.start("fase2");
 
