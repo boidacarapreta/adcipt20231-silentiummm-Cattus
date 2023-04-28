@@ -50,7 +50,7 @@ export default class principal extends Phaser.Scene {
 
     // Monstro
 
-    this.load.spritesheet("monstro1", "./assets/monstro/monstro1.png", {
+    this.load.spritesheet("monstro1", "./assets/monstros/monstro1.png", {
       frameWidth: 32,
       frameHeight: 32,
     });
