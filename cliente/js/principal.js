@@ -83,14 +83,14 @@ export default class principal extends Phaser.Scene {
     });
 
     /* Sons */
-    this.load.audio("techno-trilha", "./assets/musicas/techno.mp3");
+    this.load.audio("trilha", "./assets/musicas/trilha.mp3");
     this.load.audio("metal-som", "./assets/musicas/metal.mp3");
   }
 
   create() {
 
     /* Trilha sonora */
-    this.trilha = this.sound.add("techno-trilha");
+    this.trilha = this.sound.add("trilha");
     this.trilha.play();
 
     /* Efeitos sonoros */
@@ -135,7 +135,7 @@ export default class principal extends Phaser.Scene {
     );
 
     // Texto
-    this.mensagem = this.physics.add.sprite(50, 585, "texto");
+    this.mensagem = this.physics.add.sprite(400, 350, "texto");
     this.mensagem.body.setAllowGravity(false);
     this.mensagem.disableBody(false, true);
 
@@ -157,6 +157,11 @@ export default class principal extends Phaser.Scene {
     this.invisivel = this.physics.add.sprite(50, 585, 'invisivel');
     this.invisivel.body.setAllowGravity(false);
     this.invisivel.body.setImmovable(true);
+
+    // Botão invisivel para desativar falas
+    this.invisivel2 = this.physics.add.sprite(250, 585, 'invisivel');
+    this.invisivel2.body.setAllowGravity(false);
+    this.invisivel2.body.setImmovable(true);
 
     // Animação
     this.porta.anims.play("porta-animada", true);
@@ -343,6 +348,15 @@ export default class principal extends Phaser.Scene {
       this
     );
 
+    // Colisão para ativar as falas
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.invisivel2,
+      this.mensagem1_0,
+      null,
+      this
+    );
+
     /* Colisão entre jogador 1 e chave */
     this.physics.add.collider(
       this.jogador_1,
@@ -365,6 +379,10 @@ export default class principal extends Phaser.Scene {
 
   mensagem1(){
     this.mensagem.enableBody(true, 400, 350, true, true);
+  }
+  mensagem1_0(){
+    this.mensagem.disableBody(true, true);
+
   }
 
   abrirPorta() {

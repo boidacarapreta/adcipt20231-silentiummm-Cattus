@@ -47,7 +47,7 @@ export default class fase2 extends Phaser.Scene {
     });
 
     this.load.spritesheet("interruptor", "./assets/objetos/interruptor.png", {
-      frameWidth: 32,
+      frameWidth: 41,
       frameHeight: 32,
     });
 
@@ -85,14 +85,14 @@ export default class fase2 extends Phaser.Scene {
     });
 
     /* Sons */
-    this.load.audio("techno-trilha", "./assets/musicas/techno.mp3");
+    this.load.audio("trilha", "./assets/musicas/trilha.mp3");
     this.load.audio("metal-som", "./assets/musicas/metal.mp3");
   }
 
   create() {
 
     /* Trilha sonora */
-    this.trilha = this.sound.add("techno-trilha");
+    this.trilha = this.sound.add("trilha");
     this.trilha.play();
 
     // Mapa2
@@ -151,6 +151,7 @@ export default class fase2 extends Phaser.Scene {
         
     // adicione o botão ao mapa aqui
     this.interruptor = this.physics.add.sprite(250, 470, 'interruptor');
+    this.interruptor.setFrame(0);
     this.interruptor.body.setAllowGravity(false);
     this.interruptor.body.setImmovable(true);
 
@@ -381,6 +382,7 @@ export default class fase2 extends Phaser.Scene {
   }
 
   pressionarbotao() {
+    this.interruptor.setFrame(1);
     this.barreira.disableBody(true, true);
     
   }
