@@ -41,9 +41,7 @@ export default class fase2 extends Phaser.Scene {
       frameHeight: 180,
     });
 
-    this.load.spritesheet(
-      "porta_entrada",
-      "./assets/objetos/porta_entrada.png",
+    this.load.spritesheet( "porta_entrada", "./assets/objetos/porta_entrada.png",
       {
         frameWidth: 128,
         frameHeight: 180,
@@ -56,8 +54,13 @@ export default class fase2 extends Phaser.Scene {
     });
 
     this.load.spritesheet("barreira", "./assets/objetos/barreira.png", {
-      frameWidth: 32,
+      frameWidth: 64,
       frameHeight: 64,
+    });
+
+    this.load.spritesheet("barreira2", "./assets/objetos/barreira2.png", {
+      frameWidth: 128,
+      frameHeight: 32,
     });
 
     // Botões
@@ -156,17 +159,35 @@ export default class fase2 extends Phaser.Scene {
     this.porta_entrada = this.physics.add.sprite(100, 420, "porta_entrada");
     this.porta_entrada.body.setAllowGravity(false);
 
-    // Barreira e interruptor
+    // Barreira1
 
     this.barreira = this.physics.add.sprite(300, 450, "barreira");
     this.barreira.body.setAllowGravity(false);
     this.barreira.body.setImmovable(true);
 
-    // adicione o botão ao mapa aqui
+    // Barreira2
+
+    this.barreira2 = this.physics.add.sprite(640, 495, "barreira2");
+    this.barreira2.body.setAllowGravity(false);
+    this.barreira2.body.setImmovable(true);
+
+    // interruptor1
     this.interruptor = this.physics.add.sprite(250, 470, "interruptor");
     this.interruptor.setFrame(0);
     this.interruptor.body.setAllowGravity(false);
     this.interruptor.body.setImmovable(true);
+
+    // interruptor2
+    this.interruptor2 = this.physics.add.sprite(685, 310, "interruptor");
+    this.interruptor2.setFrame(0);
+    this.interruptor2.body.setAllowGravity(false);
+    this.interruptor2.body.setImmovable(true);
+
+    // interruptor3
+    this.interruptor3 = this.physics.add.sprite(685, 600, "interruptor");
+    this.interruptor3.setFrame(0);
+    this.interruptor3.body.setAllowGravity(false);
+    this.interruptor3.body.setImmovable(true);
 
     // Personagem 1
     // Movimentos e Física
@@ -353,11 +374,29 @@ export default class fase2 extends Phaser.Scene {
       this
     );
 
+    /* Colisão entre personagem 1 e barreira2 */
+    this.physics.add.collider(
+      this.jogador_1,
+      this.barreira2,
+      this.collision,
+      null,
+      this
+    );
+
     /* Colisão entre jogador 1 e interruptor */
     this.physics.add.overlap(
       this.jogador_1,
       this.interruptor,
       this.pressionarbotao,
+      null,
+      this
+    );
+
+    /* Colisão entre jogador 1 e interruptor */
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.interruptor2,
+      this.pressionarbotao2,
       null,
       this
     );
@@ -412,6 +451,37 @@ export default class fase2 extends Phaser.Scene {
         true,
         this.barreira.x,
         this.barreira.y,
+        true,
+        true
+      );
+      this.contador.destroy();
+      this.contando = false;
+    }
+  }
+
+  pressionarbotao2() {
+    this.interruptor2.setFrame(1);
+    this.barreira2.disableBody(true, true);
+    if (!this.contando) {
+      this.tempo = 5;
+      this.contador = this.time.addEvent({
+        delay: 1000,
+        callback: this.contagem_regressiva2,
+        callbackScope: this,
+        loop: true,
+      });
+      this.contando = true;
+    }
+  }
+
+  contagem_regressiva2() {
+    this.tempo -= 1;
+    console.log(this.tempo);
+    if (this.tempo === 0) {
+      this.barreira2.enableBody(
+        true,
+        this.barreira2.x,
+        this.barreira2.y,
         true,
         true
       );
