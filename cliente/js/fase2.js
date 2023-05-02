@@ -177,6 +177,17 @@ export default class fase2 extends Phaser.Scene {
     this.barreira3.body.setAllowGravity(false);
     this.barreira3.body.setImmovable(true);
 
+    // Barreira4
+
+    this.barreira4 = this.physics.add.sprite(1120, 575, "barreira");
+    this.barreira4.body.setAllowGravity(false);
+    this.barreira4.body.setImmovable(true);
+
+    // Barreira5
+
+    this.barreira5 = this.physics.add.sprite(940, 575, "barreira");
+    this.barreira5.body.setAllowGravity(false);
+    this.barreira5.body.setImmovable(true);
 
     // interruptor1
     this.interruptor = this.physics.add.sprite(250, 470, "interruptor");
@@ -195,6 +206,18 @@ export default class fase2 extends Phaser.Scene {
     this.interruptor3.setFrame(0);
     this.interruptor3.body.setAllowGravity(false);
     this.interruptor3.body.setImmovable(true);
+
+    // interruptor4
+    this.interruptor4 = this.physics.add.sprite(685, 600, "interruptor");
+    this.interruptor4.setFrame(0);
+    this.interruptor4.body.setAllowGravity(false);
+    this.interruptor4.body.setImmovable(true);
+
+    // interruptor5
+    this.interruptor5 = this.physics.add.sprite(685, 600, "interruptor");
+    this.interruptor5.setFrame(0);
+    this.interruptor5.body.setAllowGravity(false);
+    this.interruptor5.body.setImmovable(true);
 
     // Personagem 1
     // Movimentos e Física
@@ -399,7 +422,7 @@ export default class fase2 extends Phaser.Scene {
       this
     );
 
-    /* Colisão entre jogador 1 e interruptor */
+    /* Colisão entre jogador 1 e interruptor 1 */
     this.physics.add.overlap(
       this.jogador_1,
       this.interruptor,
@@ -408,11 +431,20 @@ export default class fase2 extends Phaser.Scene {
       this
     );
 
-    /* Colisão entre jogador 1 e interruptor */
+    /* Colisão entre jogador 1 e interruptor 2 */
     this.physics.add.overlap(
       this.jogador_1,
       this.interruptor2,
       this.pressionarbotao2,
+      null,
+      this
+    );
+
+    /* Colisão entre jogador 1 e interruptor 3 */
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.interruptor3,
+      this.pressionarbotao3,
       null,
       this
     );
@@ -498,6 +530,37 @@ export default class fase2 extends Phaser.Scene {
         true,
         this.barreira2.x,
         this.barreira2.y,
+        true,
+        true
+      );
+      this.contador.destroy();
+      this.contando = false;
+    }
+  }
+
+  pressionarbotao3() {
+    this.interruptor3.setFrame(1);
+    this.barreira3.disableBody(true, true);
+    if (!this.contando) {
+      this.tempo = 3;
+      this.contador = this.time.addEvent({
+        delay: 1000,
+        callback: this.contagem_regressiva3,
+        callbackScope: this,
+        loop: true,
+      });
+      this.contando = true;
+    }
+  }
+
+  contagem_regressiva3() {
+    this.tempo -= 1;
+    console.log(this.tempo);
+    if (this.tempo === 0) {
+      this.barreira3.enableBody(
+        true,
+        this.barreira3.x,
+        this.barreira3.y,
         true,
         true
       );
