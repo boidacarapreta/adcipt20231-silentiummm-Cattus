@@ -171,6 +171,13 @@ export default class fase2 extends Phaser.Scene {
     this.barreira2.body.setAllowGravity(false);
     this.barreira2.body.setImmovable(true);
 
+    // Barreira3
+
+    this.barreira3 = this.physics.add.sprite(940, 575, "barreira");
+    this.barreira3.body.setAllowGravity(false);
+    this.barreira3.body.setImmovable(true);
+
+
     // interruptor1
     this.interruptor = this.physics.add.sprite(250, 470, "interruptor");
     this.interruptor.setFrame(0);
@@ -178,7 +185,7 @@ export default class fase2 extends Phaser.Scene {
     this.interruptor.body.setImmovable(true);
 
     // interruptor2
-    this.interruptor2 = this.physics.add.sprite(685, 310, "interruptor");
+    this.interruptor2 = this.physics.add.sprite(685, 375, "interruptor");
     this.interruptor2.setFrame(0);
     this.interruptor2.body.setAllowGravity(false);
     this.interruptor2.body.setImmovable(true);
@@ -378,6 +385,15 @@ export default class fase2 extends Phaser.Scene {
     this.physics.add.collider(
       this.jogador_1,
       this.barreira2,
+      this.collision,
+      null,
+      this
+    );
+
+    /* Colisão entre personagem 1 e barreira3 */
+    this.physics.add.collider(
+      this.jogador_1,
+      this.barreira3,
       this.collision,
       null,
       this
