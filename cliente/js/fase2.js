@@ -154,6 +154,20 @@ export default class fase2 extends Phaser.Scene {
       0
     );
 
+    // Porta e Chave
+
+    this.porta = this.physics.add.sprite(2350, 540, "porta");
+    this.porta.body.setAllowGravity(false);
+    this.anims.create({
+      key: "porta-animada",
+      frames: this.anims.generateFrameNumbers("porta", {
+        start: 0,
+        end: 4,
+      }),
+      frameRate: 4,
+      repeat: -1,
+    }),
+
     // Porta de Entrada
 
     this.porta_entrada = this.physics.add.sprite(100, 420, "porta_entrada");
@@ -179,13 +193,13 @@ export default class fase2 extends Phaser.Scene {
 
     // Barreira4
 
-    this.barreira4 = this.physics.add.sprite(1120, 575, "barreira");
+    this.barreira4 = this.physics.add.sprite(1105, 575, "barreira");
     this.barreira4.body.setAllowGravity(false);
     this.barreira4.body.setImmovable(true);
 
     // Barreira5
 
-    this.barreira5 = this.physics.add.sprite(940, 575, "barreira");
+    this.barreira5 = this.physics.add.sprite(1360, 475, "barreira");
     this.barreira5.body.setAllowGravity(false);
     this.barreira5.body.setImmovable(true);
 
@@ -208,16 +222,10 @@ export default class fase2 extends Phaser.Scene {
     this.interruptor3.body.setImmovable(true);
 
     // interruptor4
-    this.interruptor4 = this.physics.add.sprite(685, 600, "interruptor");
+    this.interruptor4 = this.physics.add.sprite(1505, 500, "interruptor");
     this.interruptor4.setFrame(0);
     this.interruptor4.body.setAllowGravity(false);
     this.interruptor4.body.setImmovable(true);
-
-    // interruptor5
-    this.interruptor5 = this.physics.add.sprite(685, 600, "interruptor");
-    this.interruptor5.setFrame(0);
-    this.interruptor5.body.setAllowGravity(false);
-    this.interruptor5.body.setImmovable(true);
 
     // Personagem 1
     // Movimentos e Física
@@ -297,25 +305,14 @@ export default class fase2 extends Phaser.Scene {
         frameRate: 4,
         repeat: -1,
       }),
-      // Personagem 2
-      // Movimentos e Física
-      (this.jogador_2 = this.add.sprite(600, 225, "gato-2"));
 
-    // Porta e Chave
+    // Personagem 2
+    // Movimentos e Física
+  
+    (this.jogador_2 = this.add.sprite(600, 225, "gato-2"));
 
-    this.porta = this.physics.add.sprite(2350, 540, "porta");
-    this.porta.body.setAllowGravity(false);
-    this.anims.create({
-      key: "porta-animada",
-      frames: this.anims.generateFrameNumbers("porta", {
-        start: 0,
-        end: 4,
-      }),
-      frameRate: 4,
-      repeat: -1,
-    }),
-      // Animação da porta
-      this.porta.anims.play("porta-animada", true);
+    // Animação da porta
+    this.porta.anims.play("porta-animada", true);
     this.porta.body.setImmovable(true);
 
     this.chave = this.physics.add.sprite(50, 585, "chave");
@@ -422,6 +419,24 @@ export default class fase2 extends Phaser.Scene {
       this
     );
 
+    /* Colisão entre personagem 1 e barreira4 */
+    this.physics.add.collider(
+      this.jogador_1,
+      this.barreira4,
+      this.collision,
+      null,
+      this
+    );
+
+    /* Colisão entre personagem 1 e barreira5 */
+    this.physics.add.collider(
+      this.jogador_1,
+      this.barreira5,
+      this.collision,
+      null,
+      this
+    );
+
     /* Colisão entre jogador 1 e interruptor 1 */
     this.physics.add.overlap(
       this.jogador_1,
@@ -448,9 +463,18 @@ export default class fase2 extends Phaser.Scene {
       null,
       this
     );
+  
+    /* Colisão entre jogador 1 e interruptor 4 */
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.interruptor4,
+      this.pressionarbotao4,
+      null,
+      this
+    );
 
     /* Colisão entre jogador 1 e porta */
-    this.physics.add.collider(
+    this.physics.add.overlap(
       this.jogador_1,
       this.porta,
       this.abrirPorta,
@@ -569,10 +593,42 @@ export default class fase2 extends Phaser.Scene {
     }
   }
 
+  pressionarbotao4() {
+    this.interruptor4.setFrame(1);
+    this.barreira4.disableBody(true, true);
+    if (!this.contando) {
+      this.tempo = 3;
+      this.contador = this.time.addEvent({
+        delay: 1000,
+        callback: this.contagem_regressiva4,
+        callbackScope: this,
+        loop: true,
+      });
+      this.contando = true;
+    }
+  }
+
+  contagem_regressiva4() {
+    this.tempo -= 1;
+    console.log(this.tempo);
+    if (this.tempo === 0) {
+      this.barreira4.enableBody(
+        true,
+        this.barreira4.x,
+        this.barreira4.y,
+        true,
+        true
+      );
+      this.contador.destroy();
+      this.contando = false;
+    }
+  }
+
   abrirPorta() {
     if (this.chaves === 0) {
-      this.chave.enableBody(true, 200, 420, true, true);
+      this.chave.enableBody(true, 1650, 575, true, true);
       this.jogador_1.stop;
+      this.barreira5.destroy();
     } else {
       this.porta.anims.stop();
       this.jogador_1.destroy();
@@ -583,6 +639,7 @@ export default class fase2 extends Phaser.Scene {
 
   coletarChave() {
     this.chave.disableBody(true, true);
+    this.metal_som.play();
     this.chaves += 1;
   }
 }
