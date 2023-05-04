@@ -66,6 +66,11 @@ export default class fase2 extends Phaser.Scene {
     this.load.image("texto", "./assets/objetos/fala.png",
     );
 
+    this.load.spritesheet("invisivel", "./assets/objetos/vazio.png", {
+      frameWidth: 32,
+      frameHeight: 800,
+    });
+
 
     // Botões
 
@@ -158,6 +163,10 @@ export default class fase2 extends Phaser.Scene {
       0
     );
 
+    // Botao Invisivel para setar falas 
+    this.invisivel = this.physics.add.sprite(2200, 550, 'invisivel');
+    this.invisivel.body.setAllowGravity(false);
+    this.invisivel.body.setImmovable(true);
 
     // Porta e Chave
 
@@ -489,7 +498,6 @@ export default class fase2 extends Phaser.Scene {
       this.jogador_1,
       this.porta,
       this.abrirPorta,
-      this.mensagem1,
       null,
       this
     );
@@ -498,8 +506,16 @@ export default class fase2 extends Phaser.Scene {
     this.physics.add.collider(
       this.jogador_1,
       this.chave,
-      this.coletarChave,
-      this.mensagem1_0,   
+      this.coletarChave,   
+      null,
+      this
+    );
+
+    // Colisão para ativar as falas
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.invisivel,
+      this.mensagem,
       null,
       this
     );
@@ -513,14 +529,11 @@ export default class fase2 extends Phaser.Scene {
     this.cameras.main.startFollow(this.jogador_1);
   }
 
-  mensagem1(){
-//    this.mensagem.enableBody(true, 2350, 540, true, true);
-  }
-
-  mensagem1_0(){
+  
+  mensagem(){
     this.mensagem.disableBody(true, true);
+  }  
 
-  }
   pressionarbotao() {
     this.interruptor.setFrame(1);
     this.barreira.disableBody(true, true);
@@ -661,6 +674,8 @@ export default class fase2 extends Phaser.Scene {
   coletarChave() {
     this.chave.disableBody(true, true);
     this.metal_som.play();
+    this.mensagem.destroy();
+    this.invisivel.destroy();
     this.chaves += 1;
   }
 }

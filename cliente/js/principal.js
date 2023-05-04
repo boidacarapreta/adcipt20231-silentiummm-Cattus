@@ -40,12 +40,16 @@ export default class principal extends Phaser.Scene {
       frameHeight: 180,
     });
 
+
+    // 400 x 120
     this.load.image("texto", "./assets/objetos/fala.png",
     );
+    this.load.image("texto2", "./assets/objetos/fala2.png",
+    );
 
-    this.load.spritesheet("invisivel", "./assets/objetos/vazio.png", {
+    this.load.spritesheet("invisivel", "./assets/objetos/vazio2.png", {
       frameWidth: 32,
-      frameHeight: 32,
+      frameHeight: 800,
     });
 
     // Monstro
@@ -135,10 +139,9 @@ export default class principal extends Phaser.Scene {
     );
 
     // Texto
-    this.mensagem = this.physics.add.sprite(400, 350, "texto");
+    this.mensagem = this.physics.add.sprite(700, 350, "texto");
     this.mensagem.body.setAllowGravity(false);
     this.mensagem.disableBody(false, true);
-
 
     // monstro
 
@@ -158,7 +161,7 @@ export default class principal extends Phaser.Scene {
 
     // Porta e Chave
 
-    this.porta = this.physics.add.sprite(2000, 540, "porta");
+    this.porta = this.physics.add.sprite(2300, 540, "porta");
     this.porta.body.setAllowGravity(false);
     this.anims.create({
       key: "porta-animada",
@@ -170,15 +173,29 @@ export default class principal extends Phaser.Scene {
       repeat: -1,
     }),
 
-    // Botao Invisivel para setar falas *** Alterar imagem depois
-    this.invisivel = this.physics.add.sprite(200, 550, 'invisivel');
+    this.mensagem2 = this.physics.add.sprite(2300, 450, "texto2");
+    this.mensagem2.body.setAllowGravity(false);
+    this.mensagem2.disableBody(false, true);
+
+    // Botao Invisivel para setar falas 
+    this.invisivel = this.physics.add.sprite(700, 550, 'invisivel');
     this.invisivel.body.setAllowGravity(false);
     this.invisivel.body.setImmovable(true);
 
     // Botão invisivel para desativar falas
-    this.invisivel2 = this.physics.add.sprite(200, 510, 'invisivel');
+    this.invisivel2 = this.physics.add.sprite(800, 550, 'invisivel');
     this.invisivel2.body.setAllowGravity(false);
     this.invisivel2.body.setImmovable(true);
+
+    // Botão invisivel para desativar falas
+    this.invisivel3 = this.physics.add.sprite(600, 550, 'invisivel');
+    this.invisivel3.body.setAllowGravity(false);
+    this.invisivel3.body.setImmovable(true);
+
+    // Botão invisivel para desativar falas
+    this.invisivel4 = this.physics.add.sprite(2100, 550, 'invisivel');
+    this.invisivel4.body.setAllowGravity(false);
+    this.invisivel4.body.setImmovable(true);
 
     // Animação
     this.porta.anims.play("porta-animada", true);
@@ -281,7 +298,7 @@ export default class principal extends Phaser.Scene {
       .setInteractive()
       .on("pointerover", () => {
         this.cima.setFrame(1);
-        this.jogador_1.setVelocityY(-300);
+        this.jogador_1.setVelocityY(-400);
         this.jogador_1.anims.play("gato1-cima");
       })
       .on("pointerout", () => {
@@ -365,11 +382,29 @@ export default class principal extends Phaser.Scene {
       this
     );
 
-    // Colisão para ativar as falas
+    // Colisão para desativar as falas
     this.physics.add.overlap(
       this.jogador_1,
       this.invisivel2,
       this.mensagem1_0,
+      null,
+      this
+    );
+
+    // Colisão para desativar as falas
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.invisivel3,
+      this.mensagem1_0,
+      null,
+      this
+    );
+
+    // Colisão para desativar as falas
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.invisivel4,
+      this.mensagem2_0,
       null,
       this
     );
@@ -395,17 +430,26 @@ export default class principal extends Phaser.Scene {
   update() {} 
 
   mensagem1(){
-    this.mensagem.enableBody(true, 400, 350, true, true);
+    this.mensagem.enableBody(true, 700, 450, true, true);
   }
   mensagem1_0(){
     this.mensagem.disableBody(true, true);
+  }
 
+  mensagem2_0(){
+    this.mensagem2.disableBody(true, true);
   }
 
   abrirPorta() {
     if (this.chaves === 0) {
       this.chave.enableBody(true, 50, 585, true, true);
+      this.mensagem2.enableBody(true, 2300, 450, true, true);
       this.jogador_1.stop;
+      this.invisivel.destroy();
+      this.invisivel2.destroy();
+      this.invisivel3.destroy();
+      this.monstro.destroy();
+      this.mensagem.destroy();
 
     } else {
       this.porta.anims.stop();
@@ -417,6 +461,8 @@ export default class principal extends Phaser.Scene {
 
   coletarChave() {
     this.chave.disableBody(true, true);
+    this.mensagem2.destroy();
+    this.invisivel4.destroy();
     this.metal_som.play();
     this.chaves += 1;
   }
