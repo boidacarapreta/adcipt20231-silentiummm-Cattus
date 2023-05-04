@@ -154,6 +154,7 @@ export default class fase2 extends Phaser.Scene {
       0
     );
 
+
     // Porta e Chave
 
     this.porta = this.physics.add.sprite(2350, 540, "porta");
