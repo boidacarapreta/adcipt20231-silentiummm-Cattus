@@ -43,16 +43,16 @@ export default class principal extends Phaser.Scene {
     this.load.image("texto", "./assets/objetos/fala.png",
     );
 
-    this.load.spritesheet("invisivel", "./assets/objetos/interruptor.png", {
+    this.load.spritesheet("invisivel", "./assets/objetos/vazio.png", {
       frameWidth: 32,
       frameHeight: 32,
     });
 
     // Monstro
 
-    this.load.spritesheet("monstro1", "./assets/monstros/monstro1.png", {
-      frameWidth: 32,
-      frameHeight: 32,
+    this.load.spritesheet("monstro", "./assets/monstros/monstro1.png", {
+      frameWidth: 64,
+      frameHeight: 64,
     });
 
     // Botões
@@ -139,9 +139,26 @@ export default class principal extends Phaser.Scene {
     this.mensagem.body.setAllowGravity(false);
     this.mensagem.disableBody(false, true);
 
+
+    // monstro
+
+    this.monstro = this.physics.add.sprite(700, 580, "monstro");
+    this.monstro.body.setAllowGravity(false);
+    this.anims.create({
+      key: "monstro",
+      frames: this.anims.generateFrameNumbers("monstro", {
+        start: 0,
+        end: 4,
+      }),
+      frameRate: 4,
+      repeat: -1,
+    }),
+    this.monstro.anims.play("monstro", true);
+    this.monstro.body.setImmovable(true);
+
     // Porta e Chave
 
-    this.porta = this.physics.add.sprite(1100, 540, "porta");
+    this.porta = this.physics.add.sprite(2000, 540, "porta");
     this.porta.body.setAllowGravity(false);
     this.anims.create({
       key: "porta-animada",
@@ -154,12 +171,12 @@ export default class principal extends Phaser.Scene {
     }),
 
     // Botao Invisivel para setar falas *** Alterar imagem depois
-    this.invisivel = this.physics.add.sprite(50, 585, 'invisivel');
+    this.invisivel = this.physics.add.sprite(200, 550, 'invisivel');
     this.invisivel.body.setAllowGravity(false);
     this.invisivel.body.setImmovable(true);
 
     // Botão invisivel para desativar falas
-    this.invisivel2 = this.physics.add.sprite(250, 585, 'invisivel');
+    this.invisivel2 = this.physics.add.sprite(200, 510, 'invisivel');
     this.invisivel2.body.setAllowGravity(false);
     this.invisivel2.body.setImmovable(true);
 

@@ -63,6 +63,10 @@ export default class fase2 extends Phaser.Scene {
       frameHeight: 32,
     });
 
+    this.load.image("texto", "./assets/objetos/fala.png",
+    );
+
+
     // Botões
 
     this.load.spritesheet("cima", "./assets/botao/cima.png", {
@@ -174,6 +178,12 @@ export default class fase2 extends Phaser.Scene {
     this.porta_entrada = this.physics.add.sprite(100, 420, "porta_entrada");
     this.porta_entrada.body.setAllowGravity(false);
 
+    // Mensagem
+
+    this.mensagem = this.physics.add.sprite(2350, 440, "texto");
+    this.mensagem.body.setAllowGravity(false);
+    this.mensagem.disableBody(false, true);
+
     // Barreira1
 
     this.barreira = this.physics.add.sprite(300, 450, "barreira");
@@ -194,13 +204,13 @@ export default class fase2 extends Phaser.Scene {
 
     // Barreira4
 
-    this.barreira4 = this.physics.add.sprite(1105, 575, "barreira");
+    this.barreira4 = this.physics.add.sprite(1140, 575, "barreira");
     this.barreira4.body.setAllowGravity(false);
     this.barreira4.body.setImmovable(true);
 
     // Barreira5
 
-    this.barreira5 = this.physics.add.sprite(1360, 475, "barreira");
+    this.barreira5 = this.physics.add.sprite(1260, 475, "barreira");
     this.barreira5.body.setAllowGravity(false);
     this.barreira5.body.setImmovable(true);
 
@@ -479,6 +489,7 @@ export default class fase2 extends Phaser.Scene {
       this.jogador_1,
       this.porta,
       this.abrirPorta,
+      this.mensagem1,
       null,
       this
     );
@@ -488,6 +499,7 @@ export default class fase2 extends Phaser.Scene {
       this.jogador_1,
       this.chave,
       this.coletarChave,
+      this.mensagem1_0,   
       null,
       this
     );
@@ -501,6 +513,14 @@ export default class fase2 extends Phaser.Scene {
     this.cameras.main.startFollow(this.jogador_1);
   }
 
+  mensagem1(){
+//    this.mensagem.enableBody(true, 2350, 540, true, true);
+  }
+
+  mensagem1_0(){
+    this.mensagem.disableBody(true, true);
+
+  }
   pressionarbotao() {
     this.interruptor.setFrame(1);
     this.barreira.disableBody(true, true);
@@ -598,7 +618,7 @@ export default class fase2 extends Phaser.Scene {
     this.interruptor4.setFrame(1);
     this.barreira4.disableBody(true, true);
     if (!this.contando) {
-      this.tempo = 3;
+      this.tempo = 10;
       this.contador = this.time.addEvent({
         delay: 1000,
         callback: this.contagem_regressiva4,
