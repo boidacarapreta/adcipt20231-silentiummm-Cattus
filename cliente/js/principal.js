@@ -55,8 +55,8 @@ export default class principal extends Phaser.Scene {
     // Monstro
 
     this.load.spritesheet("monstro", "./assets/monstros/monstro1.png", {
-      frameWidth: 64,
-      frameHeight: 64,
+      frameWidth: 128,
+      frameHeight: 128,
     });
 
     // Botões
@@ -145,7 +145,7 @@ export default class principal extends Phaser.Scene {
 
     // monstro
 
-    this.monstro = this.physics.add.sprite(700, 580, "monstro");
+    this.monstro = this.physics.add.sprite(700, 550, "monstro");
     this.monstro.body.setAllowGravity(false);
     this.anims.create({
       key: "monstro",
