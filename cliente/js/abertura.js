@@ -39,16 +39,13 @@ export default class CenaDeAbertura extends Phaser.Scene {
         this.start.setFrame(0);
         this.imagem.destroy();
         this.texto.destroy();
-        this.game.scene.start("principal");
+        this.start.destroy();
+        this.game.scene.start("salas");
       });
   
     this.texto = this.add.text(330, 50, "Clique em Start...", {
       fill: "#ffffff",
 
     });
-  }
-  
-  update() {
-    // Código executado a cada frame
-  }
-}
+
+} }

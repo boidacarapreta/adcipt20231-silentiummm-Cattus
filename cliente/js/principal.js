@@ -52,6 +52,11 @@ export default class principal extends Phaser.Scene {
       frameHeight: 800,
     });
 
+    this.load.spritesheet("invisivel1", "./assets/objetos/vazio.png", {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+
     // Monstro
 
     this.load.spritesheet("monstro", "./assets/monstros/monstro1.png", {
@@ -138,6 +143,18 @@ export default class principal extends Phaser.Scene {
       0
     );
 
+    if (this.game.jogadores.primeiro === this.game.socket.id) {
+      this.local = "gato-1";
+      this.jogador_1 = this.physics.add.sprite(300, 225, this.local);
+      this.remoto = "gato-2";
+      this.jogador_2 = this.add.sprite(600, 225, this.remoto);
+    } else {
+      this.remoto = "gato-1";
+      this.jogador_2 = this.add.sprite(300, 225, this.remoto);
+      this.local = "gato-2";
+      this.jogador_1 = this.physics.add.sprite(600, 225, this.local);
+    }
+
     // Texto
     this.mensagem = this.physics.add.sprite(700, 350, "texto");
     this.mensagem.body.setAllowGravity(false);
@@ -178,17 +195,17 @@ export default class principal extends Phaser.Scene {
     this.mensagem2.disableBody(false, true);
 
     // Botao Invisivel para setar falas 
-    this.invisivel = this.physics.add.sprite(700, 550, 'invisivel');
+    this.invisivel = this.physics.add.sprite(700, 550, 'invisivel1');
     this.invisivel.body.setAllowGravity(false);
     this.invisivel.body.setImmovable(true);
 
     // Botão invisivel para desativar falas
-    this.invisivel2 = this.physics.add.sprite(800, 550, 'invisivel');
+    this.invisivel2 = this.physics.add.sprite(800, 550, 'invisivel1');
     this.invisivel2.body.setAllowGravity(false);
     this.invisivel2.body.setImmovable(true);
 
     // Botão invisivel para desativar falas
-    this.invisivel3 = this.physics.add.sprite(600, 550, 'invisivel');
+    this.invisivel3 = this.physics.add.sprite(600, 550, 'invisivel1');
     this.invisivel3.body.setAllowGravity(false);
     this.invisivel3.body.setImmovable(true);
 
@@ -454,6 +471,7 @@ export default class principal extends Phaser.Scene {
     } else {
       this.porta.anims.stop();
       this.porta.setFrame(5);
+      this.game.scene.stop("principal");
       this.game.scene.start("fase2");
 
     }

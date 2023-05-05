@@ -346,7 +346,7 @@ export default class fase2 extends Phaser.Scene {
       .setInteractive()
       .on("pointerover", () => {
         this.cima.setFrame(1);
-        this.jogador_1.setVelocityY(-300);
+        this.jogador_1.setVelocityY(-400);
         this.jogador_1.anims.play("gato1-cima");
       })
       .on("pointerout", () => {
