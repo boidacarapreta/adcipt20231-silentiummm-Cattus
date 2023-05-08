@@ -162,6 +162,21 @@ export default class fase2 extends Phaser.Scene {
       0,
       0
     );
+    // Porta de Entrada
+
+    this.porta_entrada = this.physics.add.sprite(100, 420, "porta_entrada");
+    this.porta_entrada.body.setAllowGravity(false);
+    if (this.game.jogadores.primeiro === this.game.socket.id) {
+      this.local = "gato-1";
+      this.jogador_1 = this.physics.add.sprite(100, 420, this.local);
+      this.remoto = "gato-2";
+      this.jogador_2 = this.add.sprite(100, 420, this.remoto);
+    } else {
+      this.remoto = "gato-1";
+      this.jogador_2 = this.add.sprite(100, 420, this.remoto);
+      this.local = "gato-2";
+      this.jogador_1 = this.physics.add.sprite(100, 420, this.local);
+    }
 
     // Botao Invisivel para setar falas 
     this.invisivel = this.physics.add.sprite(2200, 550, 'invisivel');
@@ -181,11 +196,7 @@ export default class fase2 extends Phaser.Scene {
       frameRate: 4,
       repeat: -1,
     }),
-
-    // Porta de Entrada
-
-    this.porta_entrada = this.physics.add.sprite(100, 420, "porta_entrada");
-    this.porta_entrada.body.setAllowGravity(false);
+    
 
     // Mensagem
 
@@ -248,22 +259,18 @@ export default class fase2 extends Phaser.Scene {
     this.interruptor4.body.setImmovable(true);
 
     // Personagem 1
-    // Movimentos e Física
-    this.jogador_1 = this.physics.add.sprite(100, 430, "gato-1");
-
-    // Frames Movimentação
     this.anims.create({
       key: "gato1-baixo",
-      frames: this.anims.generateFrameNumbers("gato-1", {
+      frames: this.anims.generateFrameNumbers(this.local, {
         start: 0,
         end: 3,
       }),
       frameRate: 11,
       repeat: -1,
-    }),
+      }),
       this.anims.create({
         key: "gato1-esquerda",
-        frames: this.anims.generateFrameNumbers("gato-1", {
+        frames: this.anims.generateFrameNumbers(this.local, {
           start: 4,
           end: 7,
         }),
@@ -272,7 +279,7 @@ export default class fase2 extends Phaser.Scene {
       }),
       this.anims.create({
         key: "gato1-direita",
-        frames: this.anims.generateFrameNumbers("gato-1", {
+        frames: this.anims.generateFrameNumbers(this.local, {
           start: 8,
           end: 11,
         }),
@@ -281,7 +288,7 @@ export default class fase2 extends Phaser.Scene {
       }),
       this.anims.create({
         key: "gato1-cima",
-        frames: this.anims.generateFrameNumbers("gato-1", {
+        frames: this.anims.generateFrameNumbers(this.local, {
           start: 16,
           end: 19,
         }),
@@ -291,7 +298,7 @@ export default class fase2 extends Phaser.Scene {
       // Frames Parado
       this.anims.create({
         key: "gato1-parado-baixo",
-        frames: this.anims.generateFrameNumbers("gato-1", {
+        frames: this.anims.generateFrameNumbers(this.local, {
           start: 20,
           end: 23,
         }),
@@ -300,7 +307,7 @@ export default class fase2 extends Phaser.Scene {
       }),
       this.anims.create({
         key: "gato1-parado-esquerda",
-        frames: this.anims.generateFrameNumbers("gato-1", {
+        frames: this.anims.generateFrameNumbers(this.local, {
           start: 20,
           end: 23,
         }),
@@ -309,7 +316,7 @@ export default class fase2 extends Phaser.Scene {
       }),
       this.anims.create({
         key: "gato1-parado-direita",
-        frames: this.anims.generateFrameNumbers("gato-1", {
+        frames: this.anims.generateFrameNumbers(this.local, {
           start: 24,
           end: 27,
         }),
@@ -318,26 +325,15 @@ export default class fase2 extends Phaser.Scene {
       }),
       this.anims.create({
         key: "gato1-parado-cima",
-        frames: this.anims.generateFrameNumbers("gato-1", {
+        frames: this.anims.generateFrameNumbers(this.local, {
           start: 17,
           end: 19,
         }),
         frameRate: 4,
         repeat: -1,
       }),
-
-    // Personagem 2
-    // Movimentos e Física
-  
-    (this.jogador_2 = this.add.sprite(600, 225, "gato-2"));
-
-    // Animação da porta
-    this.porta.anims.play("porta-animada", true);
-    this.porta.body.setImmovable(true);
-
-    this.chave = this.physics.add.sprite(50, 585, "chave");
-    this.chave.body.setAllowGravity(false);
-    this.chave.disableBody(false, true);
+      // Animação
+      this.jogador_1.anims.play("gato1-baixo", true);
 
     // Botão //
 
@@ -527,8 +523,33 @@ export default class fase2 extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, 2696, 640);
     this.physics.world.setBounds(0, 0, 2496, 640);
     this.cameras.main.startFollow(this.jogador_1);
+
+    this.game.socket.on("estado-notificar", ({ frame, x, y }) => {
+      this.jogador_2.setFrame(frame);
+      this.jogador_2.x = x;
+      this.jogador_2.y = y;
+    });
+
+    this.game.socket.on("arfetatos-notificar", (artefatos) => {
+      if (artefatos.cristal) {
+        this.cristal.disableBody(true, true);
+      }
+    });
   }
 
+  update() {
+    let frame;
+    try {
+      frame = this.jogador_1.anims.getFrameName();
+    } catch (e) {
+      frame = 0;
+    }
+    this.game.socket.emit("estado-publicar", this.game.sala, {
+      frame: frame,
+      x: this.jogador_1.body.x + 32,
+      y: this.jogador_1.body.y + 32,
+    });
+  }
   
   mensagem(){
     this.mensagem.disableBody(true, true);

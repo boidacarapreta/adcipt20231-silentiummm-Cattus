@@ -5,14 +5,10 @@ export default class salas extends Phaser.Scene {
   
     preload() {
 
-    this.load.image("grade", "./assets/objetos/grade.png");
-
     }
   
     create() {
         
-        this.imagem = this.add.image(400, 225, "ifsc-sj-2014");
-        this.grade = this.add.tileSprite(400, 225, 600, 300, "grade");
         this.mensagem = this.add.text(100, 75, "Escolha uma sala para entrar:", {
           fontFamily: "monospace",
           font: "32px Courier",
@@ -103,10 +99,8 @@ export default class salas extends Phaser.Scene {
             if (jogadores.segundo) {
               this.mensagem.destroy();
               this.game.jogadores = jogadores;
-              this.game.scene.start("principal");
+              this.game.scene.start("fase1");
             } else if (jogadores.primeiro) {
-              this.grade.destroy();
-              this.imagem.destroy();
               this.mensagem.setText("Aguardando segundo jogador...");
             }
           });
