@@ -3,7 +3,7 @@ import salas from "./salas.js";
 import abertura from "./abertura.js";
 import fase1 from "./fase1.js";
 import fase2 from "./fase2.js";
-//import fase3 from "./fase3.js";
+import fase3 from "./fase3.js";
 //import fim_do_jogo from "./encerramento1.js";
 //import final_feliz from "./encerramento2.js";
 
@@ -19,6 +19,7 @@ this.socket.on("connect", () => {
     this.scene.add("salas", salas);
     this.scene.add("fase1", fase1);
     this.scene.add("fase2", fase2);
+    this.scene.add("fase3", fase3);
     //this.scene.add("fim-do-jogo", fim_do_jogo);
     //this.scene.add("final-feliz", final_feliz);
 

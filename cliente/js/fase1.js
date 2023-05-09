@@ -1,7 +1,6 @@
 export default class fase1 extends Phaser.Scene {
   constructor() {
     super("fase1");
-    this.chaves = 0;
   }
 
   preload() {
@@ -97,6 +96,12 @@ export default class fase1 extends Phaser.Scene {
   }
 
   create() {
+    this.chaves = 0
+    this.invisivel = 0
+    this.invisivel1 = 0
+    this.invisivel3 = 0
+    this.monstro = 0
+    this.mensagem = 0
 
     /* Trilha sonora */
     this.trilha = this.sound.add("trilha");
@@ -443,7 +448,7 @@ export default class fase1 extends Phaser.Scene {
 
     this.game.socket.on("arfetatos-notificar", (artefatos) => {
       if (artefatos.chaves) {
-        this.chave.disableBody(true, true);
+        this.chaves += artefatos.chaves
       }
     });
   }
@@ -484,7 +489,7 @@ export default class fase1 extends Phaser.Scene {
       this.invisivel3.destroy();
       this.monstro.destroy();
       this.mensagem.destroy();
-
+      this.game.socket.emit("artefatos-publicar",{invisivel: this.invisivel, invisivel3: this.invisivel3, invisivel2: this.invisivel, monstro: this.monstro, mensagem: this.mensagem});
     } else {
       this.porta.anims.stop();
       this.porta.setFrame(5);
@@ -499,6 +504,11 @@ export default class fase1 extends Phaser.Scene {
     this.mensagem2.destroy();
     this.invisivel4.destroy();
     this.metal_som.play();
+
+    /* Jogador 1 tem uma chave a mais */
     this.chaves += 1;
+
+    /* Avisa o outro jogador que coletou uma chave */
+    this.game.socket.emit("artefatos-publicar",{chaves: this.chaves})
   }
 }
