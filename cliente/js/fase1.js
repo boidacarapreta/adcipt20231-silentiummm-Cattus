@@ -39,12 +39,9 @@ export default class fase1 extends Phaser.Scene {
       frameHeight: 180,
     });
 
-
     // 400 x 120
-    this.load.image("texto", "./assets/objetos/fala.png",
-    );
-    this.load.image("texto2", "./assets/objetos/fala2.png",
-    );
+    this.load.image("texto", "./assets/objetos/fala.png");
+    this.load.image("texto2", "./assets/objetos/fala2.png");
 
     this.load.spritesheet("invisivel", "./assets/objetos/vazio2.png", {
       frameWidth: 32,
@@ -84,7 +81,7 @@ export default class fase1 extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
-    
+
     this.load.spritesheet("tela-cheia", "./assets/botao/tela-cheia.png", {
       frameWidth: 64,
       frameHeight: 64,
@@ -96,12 +93,12 @@ export default class fase1 extends Phaser.Scene {
   }
 
   create() {
-    this.chaves = 0
-    this.invisivel = 0
-    this.invisivel1 = 0
-    this.invisivel3 = 0
-    this.monstro = 0
-    this.mensagem = 0
+    this.chaves = 0;
+    this.invisivel = 0;
+    this.invisivel1 = 0;
+    this.invisivel3 = 0;
+    this.monstro = 0;
+    this.mensagem = 0;
 
     /* Trilha sonora */
     this.trilha = this.sound.add("trilha");
@@ -158,7 +155,7 @@ export default class fase1 extends Phaser.Scene {
       }),
       frameRate: 4,
       repeat: -1,
-    })
+    });
 
     if (this.game.jogadores.primeiro === this.game.socket.id) {
       this.local = "gato-1";
@@ -190,30 +187,30 @@ export default class fase1 extends Phaser.Scene {
       frameRate: 4,
       repeat: -1,
     }),
-    this.monstro.anims.play("monstro", true);
+      this.monstro.anims.play("monstro", true);
     this.monstro.body.setImmovable(true);
 
     this.mensagem2 = this.physics.add.sprite(2300, 450, "texto2");
     this.mensagem2.body.setAllowGravity(false);
     this.mensagem2.disableBody(false, true);
 
-    // Botao Invisivel para setar falas 
-    this.invisivel = this.physics.add.sprite(700, 550, 'invisivel1');
+    // Botao Invisivel para setar falas
+    this.invisivel = this.physics.add.sprite(700, 550, "invisivel1");
     this.invisivel.body.setAllowGravity(false);
     this.invisivel.body.setImmovable(true);
 
     // Botão invisivel para desativar falas
-    this.invisivel2 = this.physics.add.sprite(800, 550, 'invisivel1');
+    this.invisivel2 = this.physics.add.sprite(800, 550, "invisivel1");
     this.invisivel2.body.setAllowGravity(false);
     this.invisivel2.body.setImmovable(true);
 
     // Botão invisivel para desativar falas
-    this.invisivel3 = this.physics.add.sprite(600, 550, 'invisivel1');
+    this.invisivel3 = this.physics.add.sprite(600, 550, "invisivel1");
     this.invisivel3.body.setAllowGravity(false);
     this.invisivel3.body.setImmovable(true);
 
     // Botão invisivel para desativar falas
-    this.invisivel4 = this.physics.add.sprite(2100, 550, 'invisivel');
+    this.invisivel4 = this.physics.add.sprite(2100, 550, "invisivel");
     this.invisivel4.body.setAllowGravity(false);
     this.invisivel4.body.setImmovable(true);
 
@@ -228,7 +225,7 @@ export default class fase1 extends Phaser.Scene {
     // Personagem 1
 
     // Frames Movimentação
-      this.anims.create({
+    this.anims.create({
       key: "gato1-baixo",
       frames: this.anims.generateFrameNumbers(this.local, {
         start: 0,
@@ -236,7 +233,7 @@ export default class fase1 extends Phaser.Scene {
       }),
       frameRate: 11,
       repeat: -1,
-      }),
+    }),
       this.anims.create({
         key: "gato1-esquerda",
         frames: this.anims.generateFrameNumbers(this.local, {
@@ -438,7 +435,6 @@ export default class fase1 extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, 2696, 640);
     this.physics.world.setBounds(0, 0, 2496, 640);
     this.cameras.main.startFollow(this.jogador_1);
-  
 
     this.game.socket.on("estado-notificar", ({ frame, x, y }) => {
       this.jogador_2.setFrame(frame);
@@ -446,9 +442,9 @@ export default class fase1 extends Phaser.Scene {
       this.jogador_2.y = y;
     });
 
-    this.game.socket.on("arfetatos-notificar", (artefatos) => {
+    this.game.socket.on("artefatos-notificar", (artefatos) => {
       if (artefatos.chaves) {
-        this.chaves += artefatos.chaves
+        this.chaves += artefatos.chaves;
       }
     });
   }
@@ -465,17 +461,16 @@ export default class fase1 extends Phaser.Scene {
       x: this.jogador_1.body.x + 32,
       y: this.jogador_1.body.y + 32,
     });
-
   }
 
-  mensagem1(){
+  mensagem1() {
     this.mensagem.enableBody(true, 700, 450, true, true);
   }
-  mensagem1_0(){
+  mensagem1_0() {
     this.mensagem.disableBody(true, true);
   }
 
-  mensagem2_0(){
+  mensagem2_0() {
     this.mensagem2.disableBody(true, true);
   }
 
@@ -489,13 +484,18 @@ export default class fase1 extends Phaser.Scene {
       this.invisivel3.destroy();
       this.monstro.destroy();
       this.mensagem.destroy();
-      this.game.socket.emit("artefatos-publicar",{invisivel: this.invisivel, invisivel3: this.invisivel3, invisivel2: this.invisivel, monstro: this.monstro, mensagem: this.mensagem});
+      this.game.socket.emit("artefatos-publicar", this.game.sala, {
+        invisivel: this.invisivel,
+        invisivel3: this.invisivel3,
+        invisivel2: this.invisivel,
+        monstro: this.monstro,
+        mensagem: this.mensagem,
+      });
     } else {
       this.porta.anims.stop();
       this.porta.setFrame(5);
       this.game.scene.stop("fase1");
       this.game.scene.start("fase2");
-
     }
   }
 
@@ -509,6 +509,6 @@ export default class fase1 extends Phaser.Scene {
     this.chaves += 1;
 
     /* Avisa o outro jogador que coletou uma chave */
-    this.game.socket.emit("artefatos-publicar",{chaves: this.chaves})
+    this.game.socket.emit("artefatos-publicar", this.game.sala, { chaves: this.chaves });
   }
 }
