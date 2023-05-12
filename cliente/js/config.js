@@ -14,7 +14,7 @@ export default {
     mode: Phaser.Scale.FIT,
     parent: "game-container",
     autoCenter: Phaser.Scale.CENTER_BOTH,
-    width: 800,
+    width: 2000,
     height: 450,
   },
 };

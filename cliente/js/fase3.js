@@ -143,7 +143,7 @@ export default class fase3 extends Phaser.Scene {
 
         // Layer 2: elementos
         this.elementos = this.mapa3.createLayer(
-          "chao3",
+          "elementos",
           [this.tileset_fundo3, this.tileset_chao3, this.tileset_lua],
           0,
           0
@@ -322,12 +322,12 @@ export default class fase3 extends Phaser.Scene {
           .setScrollFactor(0);
     
         /* Colisões por tile */
-        this.chao3.setCollisionByProperty({ collides: true });
+        this.elementos.setCollisionByProperty({ collides: true });
     
         /* Colisão entre personagem 1 e mapa (por layer) */
         this.physics.add.collider(
           this.jogador_1,
-          this.chao3,
+          this.elementos,
           this.collision,
           null,
           this

@@ -446,6 +446,21 @@ export default class fase1 extends Phaser.Scene {
       if (artefatos.chaves) {
         this.chaves += artefatos.chaves;
       }
+      if(!artefatos.invisivel){
+        this.invisivel.destroy()
+      }
+      if(artefatos.invisivel2){
+        this.invisivel2 = artefatos.invisivel2
+      }
+      if(artefatos.invisivel3){
+        this.invisivel3 = artefatos.invisivel3
+      }
+      if(artefatos.monstro){
+        this.monstro = artefatos.monstro
+      }
+      if(artefatos.mensagem){
+        this.mensagem = artefatos.mensagem
+      }
     });
   }
 
@@ -464,14 +479,20 @@ export default class fase1 extends Phaser.Scene {
   }
 
   mensagem1() {
+    if(this.mensagem.body){
     this.mensagem.enableBody(true, 700, 450, true, true);
+    }
   }
   mensagem1_0() {
-    this.mensagem.disableBody(true, true);
-  }
+    if(this.mensagem.body){
+      this.mensagem.disableBody(true, true);
+    }  
+}
 
   mensagem2_0() {
+    if(this.mensagem.body){
     this.mensagem2.disableBody(true, true);
+    }
   }
 
   abrirPorta() {
@@ -485,9 +506,9 @@ export default class fase1 extends Phaser.Scene {
       this.monstro.destroy();
       this.mensagem.destroy();
       this.game.socket.emit("artefatos-publicar", this.game.sala, {
-        invisivel: this.invisivel,
+        invisivel: this.invisivel.body.enable,
         invisivel3: this.invisivel3,
-        invisivel2: this.invisivel,
+        invisivel2: this.invisivel2,
         monstro: this.monstro,
         mensagem: this.mensagem,
       });

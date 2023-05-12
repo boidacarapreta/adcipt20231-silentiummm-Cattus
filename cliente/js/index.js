@@ -23,7 +23,7 @@ this.socket.on("connect", () => {
     //this.scene.add("fim-do-jogo", fim_do_jogo);
     //this.scene.add("final-feliz", final_feliz);
 
-    this.scene.start("salas");
+    this.scene.start("abertura");
   }
 }
 

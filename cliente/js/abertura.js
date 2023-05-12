@@ -9,8 +9,8 @@ export default class CenaDeAbertura extends Phaser.Scene {
     this.load.image("tela", "./assets/tela.png");
     // Botao de Start
     this.load.spritesheet("start", "./assets/botao/start.png", {
-        frameWidth: 64,
-        frameHeight: 16,
+        frameWidth: 128,
+        frameHeight: 128,
           });
     // Carregamento de arquivos/objetos em memória (desenhos aqui)
   }
@@ -43,7 +43,7 @@ export default class CenaDeAbertura extends Phaser.Scene {
         this.game.scene.start("salas");
       });
   
-    this.texto = this.add.text(330, 50, "Clique em Start...", {
+    this.texto = this.add.text(330, 40, "Clique em Start...", {
       fill: "#ffffff",
 
     });
