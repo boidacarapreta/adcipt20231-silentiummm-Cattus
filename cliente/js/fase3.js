@@ -149,7 +149,7 @@ export default class fase3 extends Phaser.Scene {
           0
         );
     
-        this.porta = this.physics.add.sprite(2300, 540, "porta");
+        this.porta = this.physics.add.sprite(2000, 480, "porta");
         this.porta.body.setAllowGravity(false);
         this.anims.create({
           key: "porta-animada",
@@ -163,14 +163,14 @@ export default class fase3 extends Phaser.Scene {
     
         if (this.game.jogadores.primeiro === this.game.socket.id) {
           this.local = "gato-1";
-          this.jogador_1 = this.physics.add.sprite(50, 585, this.local);
+          this.jogador_1 = this.physics.add.sprite(50, 480, this.local);
           this.remoto = "gato-2";
-          this.jogador_2 = this.add.sprite(50, 585, this.remoto);
+          this.jogador_2 = this.add.sprite(50, 480, this.remoto);
         } else {
           this.remoto = "gato-1";
-          this.jogador_2 = this.add.sprite(50, 585, this.remoto);
+          this.jogador_2 = this.add.sprite(50, 480, this.remoto);
           this.local = "gato-2";
-          this.jogador_1 = this.physics.add.sprite(50, 585, this.local);
+          this.jogador_1 = this.physics.add.sprite(50, 480, this.local);
         }
     
         // Animação
@@ -332,7 +332,16 @@ export default class fase3 extends Phaser.Scene {
           null,
           this
         );
-    
+
+        /* Colisão entre jogador 1 e porta */
+        this.physics.add.overlap(
+          this.jogador_1,
+          this.porta,
+          this.abrirPorta,
+          null,
+          this
+        );
+
         /* Colisão com os limites da cena */
         this.jogador_1.setCollideWorldBounds(true);
     
@@ -370,41 +379,21 @@ export default class fase3 extends Phaser.Scene {
     
       }
     
-      mensagem1(){
-        this.mensagem.enableBody(true, 700, 450, true, true);
-      }
-      mensagem1_0(){
-        this.mensagem.disableBody(true, true);
-      }
-    
-      mensagem2_0(){
-        this.mensagem2.disableBody(true, true);
-      }
-    
       abrirPorta() {
         if (this.chaves === 0) {
-          this.chave.enableBody(true, 50, 585, true, true);
-          this.mensagem2.enableBody(true, 2300, 450, true, true);
-          this.jogador_1.stop;
-          this.invisivel.destroy();
-          this.invisivel2.destroy();
-          this.invisivel3.destroy();
-          this.monstro.destroy();
-          this.mensagem.destroy();
-          this.game.socket.emit("artefatos-publicar",{invisivel: this.invisivel, invisivel3: this.invisivel3, invisivel2: this.invisivel, monstro: this.monstro, mensagem: this.mensagem});
+          this.chave.enableBody(true, 50, 480, true, true);
+
         } else {
           this.porta.anims.stop();
           this.porta.setFrame(5);
-          this.game.scene.stop("fase1");
-          this.game.scene.start("fase2");
+          this.game.scene.stop("fase3");
+          this.game.scene.start("encerramento");
     
         }
       }
-    
+
       coletarChave() {
         this.chave.disableBody(true, true);
-        this.mensagem2.destroy();
-        this.invisivel4.destroy();
         this.metal_som.play();
     
         /* Jogador 1 tem uma chave a mais */

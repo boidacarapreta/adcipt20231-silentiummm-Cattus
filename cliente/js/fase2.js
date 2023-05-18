@@ -553,10 +553,7 @@ export default class fase2 extends Phaser.Scene {
       y: this.jogador_1.body.y + 32,
     });
   }
-  
-  mensagem(){
-    this.mensagem.disableBody(true, true);
-  }  
+
 
   pressionarbotao() {
     this.interruptor.setFrame(1);

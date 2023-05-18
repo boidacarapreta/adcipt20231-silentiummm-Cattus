@@ -4,8 +4,7 @@ import abertura from "./abertura.js";
 import fase1 from "./fase1.js";
 import fase2 from "./fase2.js";
 import fase3 from "./fase3.js";
-//import fim_do_jogo from "./encerramento1.js";
-//import final_feliz from "./encerramento2.js";
+//import fim_do_jogo from "./encerramento.js";
 
 class Game extends Phaser.Game {
   constructor() {
