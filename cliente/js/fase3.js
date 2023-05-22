@@ -177,10 +177,6 @@ export default class fase3 extends Phaser.Scene {
         this.porta.anims.play("porta-animada", true);
         this.porta.body.setImmovable(true);
     
-        this.chave = this.physics.add.sprite(50, 585, "chave");
-        this.chave.body.setAllowGravity(false);
-        this.chave.disableBody(false, true);
-    
         // Personagem 1
     
         // Frames Movimentação
@@ -358,9 +354,6 @@ export default class fase3 extends Phaser.Scene {
         });
     
         this.game.socket.on("arfetatos-notificar", (artefatos) => {
-          if (artefatos.chaves) {
-            this.chaves += artefatos.chaves
-          }
         });
       }
     
@@ -380,17 +373,12 @@ export default class fase3 extends Phaser.Scene {
       }
     
       abrirPorta() {
-        if (this.chaves === 0) {
-          this.chave.enableBody(true, 50, 480, true, true);
-
-        } else {
           this.porta.anims.stop();
           this.porta.setFrame(5);
           this.game.scene.stop("fase3");
           this.game.scene.start("encerramento");
     
         }
-      }
 
       coletarChave() {
         this.chave.disableBody(true, true);
