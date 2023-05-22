@@ -533,9 +533,19 @@ export default class fase2 extends Phaser.Scene {
       this.jogador_2.y = y;
     });
 
-    this.game.socket.on("arfetatos-notificar", (artefatos) => {
-      if (artefatos.cristal) {
-        this.cristal.disableBody(true, true);
+    this.game.socket.on("artefatos-notificar", (artefatos) => {
+      for (let i = 0; i < artefatos.length; i++) {
+        if (artefatos[i]) {
+          this.chaves[i].objeto.enableBody(
+            false,
+            this.chaves[i].x,
+            this.chaves[i].y,
+            true,
+            true
+          );
+        } else {
+          this.chaves[i].objeto.disableBody(true, true);
+        }
       }
     });
   }
