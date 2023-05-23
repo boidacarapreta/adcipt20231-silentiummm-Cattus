@@ -39,29 +39,6 @@ export default class fase3 extends Phaser.Scene {
       frameHeight: 180,
     });
 
-    // 400 x 120
-    this.load.image("texto", "./assets/objetos/fala.png",
-    );
-    this.load.image("texto2", "./assets/objetos/fala2.png",
-    );
-
-    this.load.spritesheet("invisivel", "./assets/objetos/vazio2.png", {
-      frameWidth: 32,
-      frameHeight: 800,
-    });
-
-    this.load.spritesheet("invisivel1", "./assets/objetos/vazio.png", {
-      frameWidth: 32,
-      frameHeight: 32,
-    });
-
-    // Monstro
-
-    this.load.spritesheet("monstro", "./assets/monstros/monstro1.png", {
-      frameWidth: 128,
-      frameHeight: 128,
-    });
-
     // Botões
 
     this.load.spritesheet("cima", "./assets/botao/cima.png", {
@@ -91,7 +68,6 @@ export default class fase3 extends Phaser.Scene {
 
     /* Sons */
     this.load.audio("trilha", "./assets/musicas/trilha.mp3");
-    this.load.audio("metal-som", "./assets/musicas/metal.mp3");
   }
 
   create() {
@@ -99,9 +75,6 @@ export default class fase3 extends Phaser.Scene {
         /* Trilha sonora */
         this.trilha = this.sound.add("trilha");
         this.trilha.play();
-    
-        /* Efeitos sonoros */
-        this.metal_som = this.sound.add("metal-som");
     
         // Mapa3
     

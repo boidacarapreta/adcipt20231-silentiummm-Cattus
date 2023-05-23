@@ -4,7 +4,7 @@ import abertura from "./abertura.js";
 import fase1 from "./fase1.js";
 import fase2 from "./fase2.js";
 import fase3 from "./fase3.js";
-//import fim_do_jogo from "./encerramento.js";
+import encerramento from "./encerramento.js";
 
 class Game extends Phaser.Game {
   constructor() {
@@ -19,8 +19,8 @@ this.socket.on("connect", () => {
     this.scene.add("fase1", fase1);
     this.scene.add("fase2", fase2);
     this.scene.add("fase3", fase3);
-    //this.scene.add("fim-do-jogo", fim_do_jogo);
-    //this.scene.add("final-feliz", final_feliz);
+    this.scene.add("encerramento", encerramento);
+
 
     this.scene.start("abertura");
   }

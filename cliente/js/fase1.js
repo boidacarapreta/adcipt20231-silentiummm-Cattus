@@ -39,11 +39,6 @@ export default class fase1 extends Phaser.Scene {
       frameHeight: 180,
     });
 
-    this.load.spritesheet("barreira", "./assets/objetos/barreira3.png", {
-      frameWidth: 32,
-      frameHeight: 128,
-    });
-
     // 400 x 120
     this.load.image("texto", "./assets/objetos/fala.png");
     this.load.image("texto2", "./assets/objetos/fala2.png");
@@ -190,10 +185,6 @@ export default class fase1 extends Phaser.Scene {
       this.monstro.anims.play("monstro", true);
     this.monstro.body.setImmovable(true);
 
-    this.mensagem2 = this.physics.add.sprite(2300, 450, "texto2");
-    this.mensagem2.body.setAllowGravity(false);
-    this.mensagem2.disableBody(false, true);
-
     // Botao Invisivel para setar falas
     this.invisivel = this.physics.add.sprite(700, 550, "invisivel1");
     this.invisivel.body.setAllowGravity(false);
@@ -213,12 +204,10 @@ export default class fase1 extends Phaser.Scene {
     this.porta.anims.play("porta-animada", true);
     this.porta.body.setImmovable(true);
 
-    //this.chave.enableBody(false, true);
-
     this.chave = [
       {
-        x: 50,
-        y: 585,
+        x: 1560,
+        y: 400,
         objeto: undefined,
       },
     ];
@@ -229,26 +218,6 @@ export default class fase1 extends Phaser.Scene {
         this.jogador_1,
         item.objeto,
         this.coletarChave,
-        null,
-        this
-      );
-    });
-
-    this.barreira = [
-      {
-        x: 150,
-        y: 538,
-        objeto: undefined,
-      },
-    ];
-    this.barreira.forEach((item) => {
-      item.objeto = this.physics.add.sprite(item.x, item.y, "barreira");
-      item.objeto.body.setAllowGravity(false);
-      item.objeto.body.setImmovable(true);
-      this.physics.add.collider(
-        this.jogador_1,
-        item.objeto,
-        this.collision,
         null,
         this
       );
@@ -442,14 +411,6 @@ export default class fase1 extends Phaser.Scene {
       this
     );
 
-    this.physics.add.collider(
-      this.jogador_1,
-      this.barreira,
-      this.collision,
-      null,
-      this
-    );
-
     /* Colisão com os limites da cena */
     this.jogador_1.setCollideWorldBounds(true);
 
@@ -467,10 +428,7 @@ export default class fase1 extends Phaser.Scene {
     this.game.socket.on("artefatos-notificar", (artefatos) => {
       if (artefatos.chave) {
         this.chaves = artefatos.chave;
-      } else if (artefatos.barreira) {
-        barreira.disableBody(true, true);
-  
-      }
+      } 
     });
   }
 
@@ -499,26 +457,23 @@ export default class fase1 extends Phaser.Scene {
     }
   }
 
-  abrirPorta(jogador, barreira) {
+  abrirPorta() {
     if (this.chaves === 0) {
-      barreira.disableBody(true, true);
-      this.mensagem2.enableBody(true, 2300, 450, true, true);
       this.invisivel.destroy();
+      this.invisivel1.destroy();
+      this.invisivel2.destroy();
       this.monstro.destroy();
-      this.game.socket.emit("artefatos-publicar", this.game.sala, {
-        barreira: true,
-      });
+      this.mensagem.destroy();
     } else {
       this.porta.anims.stop();
       this.porta.setFrame(5);
-      this.game.scene.stop("fase1");
+      this.game.scene.destroy("fase1");
       this.game.scene.start("fase2");
     }
   }
 
   coletarChave(jogador, chave) {
     chave.disableBody(true, true);
-    this.mensagem2.destroy();
     this.metal_som.play();
     this.chaves += 1;
     this.game.socket.emit("artefatos-publicar", this.game.sala, {

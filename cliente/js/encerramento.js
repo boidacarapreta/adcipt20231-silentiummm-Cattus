@@ -1,6 +1,6 @@
 export default class encerramento extends Phaser.Scene {
     constructor() {
-      super("encerramento2");
+      super("encerramento");
     }
   
     preload() {}
