@@ -175,6 +175,10 @@ export default class fase1 extends Phaser.Scene {
     this.mensagem.body.setAllowGravity(false);
     this.mensagem.disableBody(false, true);
 
+    this.mensagem01 = this.physics.add.sprite(2300, 340, "texto2");
+    this.mensagem01.body.setAllowGravity(false);
+    this.mensagem01.disableBody(true, true);
+
     // monstro
 
     this.monstro = this.physics.add.sprite(700, 550, "monstro");
@@ -212,8 +216,8 @@ export default class fase1 extends Phaser.Scene {
 
     this.chave = [
       {
-        x: 1560,
-        y: 400,
+        x: 50,
+        y: 570,
         objeto: undefined,
       },
     ];
@@ -508,9 +512,10 @@ export default class fase1 extends Phaser.Scene {
 
   abrirPorta(jogador, barreira) {
     if (this.chaves === 0) {
+      this.mensagem01.enableBody(true, 2300, 340, true, true);
       this.invisivel.disableBody(true, true);
-      this.invisivel1.disableBody(true, true);
       this.invisivel2.disableBody(true, true);
+      this.invisivel3.disableBody(true, true);
       this.monstro.disableBody(true, true);
       this.mensagem.disableBody(true, true);
       this.collision();
