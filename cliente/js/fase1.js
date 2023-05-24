@@ -53,6 +53,11 @@ export default class fase1 extends Phaser.Scene {
       frameHeight: 32,
     });
 
+    this.load.spritesheet("barreira", "./assets/objetos/barreira3.png", {
+      frameWidth: 32,
+      frameHeight: 128,
+    });
+
     // Monstro
 
     this.load.spritesheet("monstro", "./assets/monstros/monstro1.png", {
@@ -222,6 +227,27 @@ export default class fase1 extends Phaser.Scene {
         this
       );
     });
+
+    this.barreira = [
+      {
+        x: 150,
+        y: 538,
+        objeto: undefined,
+      },
+    ];
+    this.barreira.forEach((item) => {
+      item.objeto = this.physics.add.sprite(item.x, item.y, "barreira");
+      item.objeto.body.setAllowGravity(false);
+      item.objeto.body.setImmovable(true);
+      this.physics.add.collider(
+        this.jogador_1,
+        item.objeto,
+        this.collision,
+        null,
+        this
+      );
+    });
+
 
     // Personagem 1
 
@@ -428,6 +454,8 @@ export default class fase1 extends Phaser.Scene {
     this.game.socket.on("artefatos-notificar", (artefatos) => {
       if (artefatos.chave) {
         this.chaves = artefatos.chave;
+      } else if (artefatos.barreira) {
+        barreira.disableBody(true, true);
       } 
     });
   }
@@ -457,13 +485,17 @@ export default class fase1 extends Phaser.Scene {
     }
   }
 
-  abrirPorta() {
+  abrirPorta(jogador,barreira) {
     if (this.chaves === 0) {
       this.invisivel.destroy();
       this.invisivel1.destroy();
       this.invisivel2.destroy();
       this.monstro.destroy();
       this.mensagem.destroy();
+      barreira.disableBody(true, true);
+      this.game.socket.emit("artefatos-publicar", this.game.sala, {
+        barreira: true,
+      });
     } else {
       this.porta.anims.stop();
       this.porta.setFrame(5);
