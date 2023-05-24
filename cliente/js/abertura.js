@@ -4,14 +4,13 @@ export default class CenaDeAbertura extends Phaser.Scene {
   }
 
   preload() {
-
     // Imagem Inicial
     this.load.image("tela", "./assets/tela.png");
     // Botao de Start
     this.load.spritesheet("start", "./assets/botao/start.png", {
-        frameWidth: 128,
-        frameHeight: 128,
-          });
+      frameWidth: 128,
+      frameHeight: 128,
+    });
     // Carregamento de arquivos/objetos em memória (desenhos aqui)
   }
 
@@ -19,16 +18,14 @@ export default class CenaDeAbertura extends Phaser.Scene {
     // Carregar em tela e/ou
     // Registrar eventos
 
-
     // this.imagem_de_fundo = this.add.image(...)
     // this.botao = this.add.image(...).setInteractive.on("pointerdown", () => {...})
 
     this.imagem = this.add
       .image(400, 225, "tela")
       .setInteractive()
-      .on("pointerdown", () => {
-      });
-    
+      .on("pointerdown", () => {});
+
     this.start = this.add
       .sprite(400, 80, "start", 0)
       .setInteractive()
@@ -42,10 +39,9 @@ export default class CenaDeAbertura extends Phaser.Scene {
         this.start.destroy();
         this.game.scene.start("salas");
       });
-  
+
     this.texto = this.add.text(330, 40, "Clique em Start...", {
       fill: "#ffffff",
-
     });
-
-} }
+  }
+}
