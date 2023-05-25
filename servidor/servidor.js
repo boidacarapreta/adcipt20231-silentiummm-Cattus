@@ -44,6 +44,18 @@ io.on("connection", (socket) => {
     socket.broadcast.to(sala).emit("cena-notificar", cena);
   });
 
+  socket.on("offer", (sala, description) => {
+    socket.broadcast.to(sala).emit("offer", description);
+  });
+
+  socket.on("candidate", (sala, candidate) => {
+    socket.broadcast.to(sala).emit("candidate", candidate);
+  });
+
+  socket.on("answer", (sala, description) => {
+    socket.broadcast.to(sala).emit("answer", description);
+  });
+
   socket.on("disconnect", () => { });
 });
 

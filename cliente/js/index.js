@@ -8,7 +8,20 @@ import encerramento from "./encerramento.js";
 
 class Game extends Phaser.Game {
   constructor() {
+
     super(config);
+
+    /* Lista de servidor(es) ICE */
+    this.ice_servers = {
+      iceServers: [
+        {
+          urls: "stun:stun.l.google.com:19302",
+        },
+      ],
+    };
+
+    /* Associação de objeto HTML de áudio e objeto JS */
+    this.audio = document.querySelector("audio");
 
     this.socket = io();
     this.socket.on("connect", () => {
@@ -20,7 +33,6 @@ class Game extends Phaser.Game {
     this.scene.add("fase2", fase2);
     this.scene.add("fase3", fase3);
     this.scene.add("encerramento", encerramento);
-
     this.scene.start("abertura");
   }
 }
