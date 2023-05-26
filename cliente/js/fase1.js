@@ -53,11 +53,6 @@ export default class fase1 extends Phaser.Scene {
       frameHeight: 32,
     });
 
-    this.load.spritesheet("barreira", "./assets/objetos/barreira3.png", {
-      frameWidth: 32,
-      frameHeight: 128,
-    });
-
     // Monstro
 
     this.load.spritesheet("monstro", "./assets/monstros/monstro1.png", {
@@ -330,26 +325,6 @@ export default class fase1 extends Phaser.Scene {
       );
     });
 
-    this.barreiras = [
-      {
-        x: 150,
-        y: 538,
-        objeto: undefined,
-      },
-    ];
-    this.barreiras.forEach((item) => {
-      item.objeto = this.physics.add.sprite(item.x, item.y, "barreira");
-      item.objeto.body.setAllowGravity(false);
-      item.objeto.body.setImmovable(true);
-      this.physics.add.collider(
-        this.jogador_1,
-        item.objeto,
-        this.collision,
-        null,
-        this
-      );
-    });
-
     // Personagem 1
 
     // Frames Movimentação
@@ -558,21 +533,6 @@ export default class fase1 extends Phaser.Scene {
       if (artefatos.chave) {
         this.chaves = artefatos.chave;
       }
-      if (artefatos.barreiras) {
-        for (let i = 0; i < artefatos.barreiras.length; i++) {
-          if (artefatos.barreiras[i]) {
-            this.barreiras[i].objeto.enableBody(
-              false,
-              this.barreiras[i].x,
-              this.barreiras[i].y,
-              true,
-              true
-            );
-          } else {
-            this.barreiras[i].objeto.disableBody(true, true);
-          }
-        }
-      }
     });
 
     this.game.socket.on("cena-notificar", (cena) => {
@@ -607,7 +567,7 @@ export default class fase1 extends Phaser.Scene {
     }
   }
 
-  abrirPorta(jogador, barreira) {
+  abrirPorta(jogador) {
     if (this.chaves === 0) {
       this.mensagem01.enableBody(true, 2300, 340, true, true);
       this.invisivel.disableBody(true, true);
@@ -615,22 +575,12 @@ export default class fase1 extends Phaser.Scene {
       this.invisivel3.disableBody(true, true);
       this.monstro.disableBody(true, true);
       this.mensagem.disableBody(true, true);
-      this.collision();
     } else {
       this.porta.setFrame(5);
       this.game.scene.stop("fase1");
       this.game.scene.start("fase2");
       this.game.socket.emit("cena-publicar", this.game.sala, "fase2");
     }
-  }
-
-  collision() {
-    this.barreiras.forEach((item) => {
-      item.objeto.disableBody(true, true);
-    });
-    this.game.socket.emit("artefatos-publicar", this.game.sala, {
-      barreiras: this.barreiras.map((item) => item.objeto.visible),
-    });
   }
 
   coletarChave(jogador, chave) {

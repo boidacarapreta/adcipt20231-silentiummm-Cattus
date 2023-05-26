@@ -1,6 +1,7 @@
 export default class fase3 extends Phaser.Scene {
   constructor() {
     super("fase3");
+    this.chaves = 0;
   }
 
   preload() {
@@ -11,9 +12,7 @@ export default class fase3 extends Phaser.Scene {
     // Tilesets
 
     // Mapa 1
-    this.load.image("chao3", "./assets/mapa3/chao3.png");
-    this.load.image("fundo3", "./assets/mapa3/fundo3.png");
-    this.load.image("lua", "./assets/mapa3/lua.png");
+    this.load.image("fundo-camada1", "./assets/mapa3/fundo-camada1.png");
 
     // Corpo do Gato 1
     this.load.spritesheet("gato-1", "./assets/gato1/gato1-inteiro.png", {
@@ -37,6 +36,37 @@ export default class fase3 extends Phaser.Scene {
     this.load.spritesheet("porta", "./assets/objetos/porta.png", {
       frameWidth: 128,
       frameHeight: 180,
+    });
+
+    this.load.spritesheet(
+      "porta_entrada",
+      "./assets/objetos/porta_entrada.png",
+      {
+        frameWidth: 128,
+        frameHeight: 180,
+      }
+    );
+
+    this.load.spritesheet("interruptor", "./assets/objetos/interruptor.png", {
+      frameWidth: 41,
+      frameHeight: 32,
+    });
+
+    this.load.spritesheet("barreira", "./assets/objetos/barreira.png", {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
+
+    this.load.spritesheet("barreira2", "./assets/objetos/barreira2.png", {
+      frameWidth: 128,
+      frameHeight: 32,
+    });
+
+    this.load.image("texto", "./assets/objetos/fala.png");
+
+    this.load.spritesheet("invisivel", "./assets/objetos/vazio.png", {
+      frameWidth: 32,
+      frameHeight: 800,
     });
 
     // Botões
@@ -68,51 +98,104 @@ export default class fase3 extends Phaser.Scene {
 
     /* Sons */
     this.load.audio("trilha", "./assets/musicas/trilha.mp3");
+    this.load.audio("metal-som", "./assets/musicas/metal.mp3");
   }
 
   create() {
+    this.game.fase = 2;
+
     /* Trilha sonora */
     this.trilha = this.sound.add("trilha");
+    this.trilha.loop = true;
     this.trilha.play();
-
-    // Mapa3
+    this.metal_som = this.sound.add("metal-som");
+    // Mapa2
 
     // Tilemap
+    /* this.mapa2 = this.make.tilemap({
+      key: "mapa2",
+    });
+
+    this.tileset_camada1 = this.mapa2.addTilesetImage(
+      "fundo-camada1",
+      "fundo-camada1"
+    );
+
+    this.tileset_camada2 = this.mapa2.addTilesetImage(
+      "fundo-camada2",
+      "fundo-camada2"
+    );
+
+    this.tileset_camada3 = this.mapa2.addTilesetImage(
+      "fundo-camada3",
+      "fundo-camada3"
+    );
+
+    this.tileset_plataforma2 = this.mapa2.addTilesetImage(
+      "plataforma2",
+      "plataforma2"
+    );*/
+
     this.mapa3 = this.make.tilemap({
       key: "mapa3",
     });
 
-    this.tileset_fundo3 = this.mapa3.addTilesetImage("fundo3", "fundo3");
+    this.tileset_camada1 = this.mapa3.addTilesetImage(
+      "fundo-camada1",
+      "fundo-camada1"
+    );
 
-    this.tileset_chao3 = this.mapa3.addTilesetImage("chao3", "chao3");
 
-    this.tileset_lua = this.mapa3.addTilesetImage("lua", "lua");
-
-    // Layer 0: fundo3
-    this.fundo3 = this.mapa3.createLayer(
-      "fundo3",
-      [this.tileset_fundo3, this.tileset_chao3, this.tileset_lua],
+    /* // Layer 0: fundo 2
+    this.fundo2 = this.mapa2.createLayer(
+      "fundo2",
+      [
+        this.tileset_camada1,
+        this.tileset_camada2,
+        this.tileset_camada3,
+        this.tileset_plataforma2,
+      ],
       0,
       0
     );
 
-    // Layer 1: chao3
-    this.chao3 = this.mapa3.createLayer(
-      "chao3",
-      [this.tileset_fundo3, this.tileset_chao3, this.tileset_lua],
+    // Layer 1: chão 2
+    this.plataforma2 = this.mapa2.createLayer(
+      "plataforma2",
+      [
+        this.tileset_camada1,
+        this.tileset_camada2,
+        this.tileset_camada3,
+        this.tileset_plataforma2,
+      ],
       0,
       0
     );
 
-    // Layer 2: elementos
-    this.elementos = this.mapa3.createLayer(
-      "elementos",
-      [this.tileset_fundo3, this.tileset_chao3, this.tileset_lua],
+    */
+    
+    // Layer 0: fundo 2
+    this.fundo2 = this.mapa3.createLayer(
+      "fundo2",
+      [
+        this.tileset_camada1,
+      ],
       0,
       0
     );
 
-    this.porta = this.physics.add.sprite(2000, 480, "porta");
+    // Layer 1: chão 2
+    this.plataforma2 = this.mapa3.createLayer(
+      "plataforma2",
+      [
+        this.tileset_camada1,
+      ],
+      0,
+      0
+    );
+    // Porta e Chave
+
+    this.porta = this.physics.add.sprite(2350, 540, "porta");
     this.porta.body.setAllowGravity(false);
     this.anims.create({
       key: "porta-animada",
@@ -122,27 +205,103 @@ export default class fase3 extends Phaser.Scene {
       }),
       frameRate: 4,
       repeat: -1,
-    });
+    }),
+      // Porta de Entrada
+
+      (this.porta_entrada = this.physics.add.sprite(100, 420, "porta_entrada"));
+    this.porta_entrada.body.setAllowGravity(false);
 
     if (this.game.jogadores.primeiro === this.game.socket.id) {
       this.local = "gato-1";
-      this.jogador_1 = this.physics.add.sprite(50, 480, this.local);
+      this.jogador_1 = this.physics.add.sprite(100, 420, this.local);
       this.remoto = "gato-2";
-      this.jogador_2 = this.add.sprite(50, 480, this.remoto);
+      this.jogador_2 = this.add.sprite(100, 420, this.remoto);
     } else {
       this.remoto = "gato-1";
-      this.jogador_2 = this.add.sprite(50, 480, this.remoto);
+      this.jogador_2 = this.add.sprite(100, 420, this.remoto);
       this.local = "gato-2";
-      this.jogador_1 = this.physics.add.sprite(50, 480, this.local);
+      this.jogador_1 = this.physics.add.sprite(100, 420, this.local);
     }
 
-    // Animação
-    this.porta.anims.play("porta-animada", true);
-    this.porta.body.setImmovable(true);
+    // Botao Invisivel para setar falas
+    this.invisivel = this.physics.add.sprite(2200, 550, "invisivel");
+    this.invisivel.body.setAllowGravity(false);
+    this.invisivel.body.setImmovable(true);
+
+    this.chave = this.physics.add.sprite(50, 585, "chave");
+    this.chave.body.setAllowGravity(false);
+    this.chave.disableBody(false, true);
+
+    // Mensagem
+
+    this.mensagem = this.physics.add.sprite(2350, 440, "texto");
+    this.mensagem.body.setAllowGravity(false);
+    this.mensagem.disableBody(false, true);
+
+    this.barreiras = [
+      {
+        x: 300,
+        y: 450,
+        imagem: "barreira",
+      },
+      {
+        x: 640,
+        y: 495,
+        imagem: "barreira2",
+      },
+      {
+        x: 940,
+        y: 575,
+        imagem: "barreira",
+      },
+      {
+        x: 1140,
+        y: 575,
+        imagem: "barreira",
+      },
+      {
+        x: 1260,
+        y: 475,
+        imagem: "barreira",
+      },
+      {
+        x: 1700,
+        y: 575,
+        imagem: "barreira",
+      },
+    ];
+    this.barreiras.forEach((item) => {
+      item.objeto = this.physics.add.sprite(item.x, item.y, item.imagem);
+      item.objeto.body.setAllowGravity(false);
+      item.objeto.body.setImmovable(true);
+      this.physics.add.collider(this.jogador_1, item.objeto, null, null, this);
+    });
+
+    // interruptor1
+    this.interruptor = this.physics.add.sprite(250, 470, "interruptor");
+    this.interruptor.setFrame(0);
+    this.interruptor.body.setAllowGravity(false);
+    this.interruptor.body.setImmovable(true);
+
+    // interruptor2
+    this.interruptor2 = this.physics.add.sprite(685, 375, "interruptor");
+    this.interruptor2.setFrame(0);
+    this.interruptor2.body.setAllowGravity(false);
+    this.interruptor2.body.setImmovable(true);
+
+    // interruptor3
+    this.interruptor3 = this.physics.add.sprite(685, 600, "interruptor");
+    this.interruptor3.setFrame(0);
+    this.interruptor3.body.setAllowGravity(false);
+    this.interruptor3.body.setImmovable(true);
+
+    // interruptor4
+    this.interruptor4 = this.physics.add.sprite(1650, 600, "interruptor");
+    this.interruptor4.setFrame(0);
+    this.interruptor4.body.setAllowGravity(false);
+    this.interruptor4.body.setImmovable(true);
 
     // Personagem 1
-
-    // Frames Movimentação
     this.anims.create({
       key: "gato1-baixo",
       frames: this.anims.generateFrameNumbers(this.local, {
@@ -151,73 +310,81 @@ export default class fase3 extends Phaser.Scene {
       }),
       frameRate: 11,
       repeat: -1,
-    }),
-      this.anims.create({
-        key: "gato1-esquerda",
-        frames: this.anims.generateFrameNumbers(this.local, {
-          start: 4,
-          end: 7,
-        }),
-        frameRate: 11,
-        repeat: -1,
+    });
+
+    this.anims.create({
+      key: "gato1-esquerda",
+      frames: this.anims.generateFrameNumbers(this.local, {
+        start: 4,
+        end: 7,
       }),
-      this.anims.create({
-        key: "gato1-direita",
-        frames: this.anims.generateFrameNumbers(this.local, {
-          start: 8,
-          end: 11,
-        }),
-        frameRate: 11,
-        repeat: -1,
+      frameRate: 11,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "gato1-direita",
+      frames: this.anims.generateFrameNumbers(this.local, {
+        start: 8,
+        end: 11,
       }),
-      this.anims.create({
-        key: "gato1-cima",
-        frames: this.anims.generateFrameNumbers(this.local, {
-          start: 16,
-          end: 19,
-        }),
-        frameRate: 11,
-        repeat: -1,
+      frameRate: 11,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "gato1-cima",
+      frames: this.anims.generateFrameNumbers(this.local, {
+        start: 16,
+        end: 19,
       }),
-      // Frames Parado
-      this.anims.create({
-        key: "gato1-parado-baixo",
-        frames: this.anims.generateFrameNumbers(this.local, {
-          start: 20,
-          end: 23,
-        }),
-        frameRate: 4,
-        repeat: -1,
+      frameRate: 11,
+      repeat: -1,
+    });
+
+    // Frames Parado
+    this.anims.create({
+      key: "gato1-parado-baixo",
+      frames: this.anims.generateFrameNumbers(this.local, {
+        start: 20,
+        end: 23,
       }),
-      this.anims.create({
-        key: "gato1-parado-esquerda",
-        frames: this.anims.generateFrameNumbers(this.local, {
-          start: 20,
-          end: 23,
-        }),
-        frameRate: 4,
-        repeat: -1,
+      frameRate: 4,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "gato1-parado-esquerda",
+      frames: this.anims.generateFrameNumbers(this.local, {
+        start: 20,
+        end: 23,
       }),
-      this.anims.create({
-        key: "gato1-parado-direita",
-        frames: this.anims.generateFrameNumbers(this.local, {
-          start: 24,
-          end: 27,
-        }),
-        frameRate: 4,
-        repeat: -1,
+      frameRate: 4,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "gato1-parado-direita",
+      frames: this.anims.generateFrameNumbers(this.local, {
+        start: 24,
+        end: 27,
       }),
-      this.anims.create({
-        key: "gato1-parado-cima",
-        frames: this.anims.generateFrameNumbers(this.local, {
-          start: 17,
-          end: 19,
-        }),
-        frameRate: 4,
-        repeat: -1,
+      frameRate: 4,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "gato1-parado-cima",
+      frames: this.anims.generateFrameNumbers(this.local, {
+        start: 17,
+        end: 19,
       }),
-      // Animação
-      this.jogador_1.anims.play("gato1-baixo", true);
+      frameRate: 4,
+      repeat: -1,
+    });
+
+    // Animação
+    this.jogador_1.anims.play("gato1-baixo", true);
 
     // Botão //
 
@@ -281,13 +448,49 @@ export default class fase3 extends Phaser.Scene {
       .setScrollFactor(0);
 
     /* Colisões por tile */
-    this.elementos.setCollisionByProperty({ collides: true });
+    this.plataforma2.setCollisionByProperty({ collides: true });
 
     /* Colisão entre personagem 1 e mapa (por layer) */
     this.physics.add.collider(
       this.jogador_1,
-      this.elementos,
+      this.plataforma2,
       this.collision,
+      null,
+      this
+    );
+
+    /* Colisão entre jogador 1 e interruptor 1 */
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.interruptor,
+      this.pressionarbotao,
+      null,
+      this
+    );
+
+    /* Colisão entre jogador 1 e interruptor 2 */
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.interruptor2,
+      this.pressionarbotao2,
+      null,
+      this
+    );
+
+    /* Colisão entre jogador 1 e interruptor 3 */
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.interruptor3,
+      this.pressionarbotao3,
+      null,
+      this
+    );
+
+    /* Colisão entre jogador 1 e interruptor 4 */
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.interruptor4,
+      this.pressionarbotao4,
       null,
       this
     );
@@ -297,6 +500,15 @@ export default class fase3 extends Phaser.Scene {
       this.jogador_1,
       this.porta,
       this.abrirPorta,
+      null,
+      this
+    );
+
+    /* Colisão entre jogador 1 e chave */
+    this.physics.add.collider(
+      this.jogador_1,
+      this.chave,
+      this.coletarChave,
       null,
       this
     );
@@ -317,10 +529,29 @@ export default class fase3 extends Phaser.Scene {
       }
     });
 
-    this.game.socket.on("arfetatos-notificar", (artefatos) => {});
+    this.game.socket.on("artefatos-notificar", (artefatos) => {
+      if (artefatos.chave) {
+        this.chaves = artefatos.chave;
+      }
+      if (artefatos.barreiras) {
+        for (let i = 0; i < artefatos.barreiras.length; i++) {
+          if (artefatos.barreiras[i]) {
+            this.barreiras[i].objeto.enableBody(
+              false,
+              this.barreiras[i].x,
+              this.barreiras[i].y,
+              true,
+              true
+            );
+          } else {
+            this.barreiras[i].objeto.disableBody(true, true);
+          }
+        }
+      }
+    });
 
     this.game.socket.on("cena-notificar", (cena) => {
-      this.game.scene.stop("fase3");
+      this.game.scene.stop("fase2");
       this.game.scene.start(cena);
     });
   }
@@ -340,21 +571,177 @@ export default class fase3 extends Phaser.Scene {
     }
   }
 
+  pressionarbotao() {
+    this.interruptor.setFrame(1);
+    this.barreiras[0].objeto.disableBody(true, true);
+    this.game.socket.emit("artefatos-publicar", this.game.sala, {
+      barreiras: this.barreiras.map((item) => item.objeto.visible),
+    });
+
+    if (!this.contando) {
+      this.tempo = 3;
+      this.contador = this.time.addEvent({
+        delay: 1000,
+        callback: this.contagem_regressiva,
+        callbackScope: this,
+        loop: true,
+      });
+      this.contando = true;
+    }
+  }
+
+  contagem_regressiva() {
+    this.tempo -= 1;
+    console.log(this.tempo);
+    if (this.tempo === 0) {
+      this.barreiras[0].objeto.enableBody(
+        true,
+        this.barreiras[0].x,
+        this.barreiras[0].y,
+        true,
+        true
+      );
+      this.game.socket.emit("artefatos-publicar", this.game.sala, {
+        barreiras: this.barreiras.map((item) => item.objeto.visible),
+      });
+      this.contador.destroy();
+      this.contando = false;
+    }
+  }
+
+  pressionarbotao2() {
+    this.interruptor2.setFrame(1);
+    this.barreiras[1].objeto.disableBody(true, true);
+    this.game.socket.emit("artefatos-publicar", this.game.sala, {
+      barreiras: this.barreiras.map((item) => item.objeto.visible),
+    });
+    if (!this.contando) {
+      this.tempo = 5;
+      this.contador = this.time.addEvent({
+        delay: 1000,
+        callback: this.contagem_regressiva2,
+        callbackScope: this,
+        loop: true,
+      });
+      this.contando = true;
+    }
+  }
+
+  contagem_regressiva2() {
+    this.tempo -= 1;
+    console.log(this.tempo);
+    if (this.tempo === 0) {
+      this.barreiras[1].objeto.enableBody(
+        true,
+        this.barreiras[1].x,
+        this.barreiras[1].y,
+        true,
+        true
+      );
+      this.game.socket.emit("artefatos-publicar", this.game.sala, {
+        barreiras: this.barreiras.map((item) => item.objeto.visible),
+      });
+      this.contador.destroy();
+      this.contando = false;
+    }
+  }
+
+  pressionarbotao3() {
+    this.interruptor3.setFrame(1);
+    this.barreiras[2].objeto.disableBody(true, true);
+    this.game.socket.emit("artefatos-publicar", this.game.sala, {
+      barreiras: this.barreiras.map((item) => item.objeto.visible),
+    });
+    if (!this.contando) {
+      this.tempo = 3;
+      this.contador = this.time.addEvent({
+        delay: 1000,
+        callback: this.contagem_regressiva3,
+        callbackScope: this,
+        loop: true,
+      });
+      this.contando = true;
+    }
+  }
+
+  contagem_regressiva3() {
+    this.tempo -= 1;
+    console.log(this.tempo);
+    if (this.tempo === 0) {
+      this.barreiras[2].objeto.enableBody(
+        true,
+        this.barreiras[2].x,
+        this.barreiras[2].y,
+        true,
+        true
+      );
+      this.game.socket.emit("artefatos-publicar", this.game.sala, {
+        barreiras: this.barreiras.map((item) => item.objeto.visible),
+      });
+      this.contador.destroy();
+      this.contando = false;
+    }
+  }
+
+  pressionarbotao4() {
+    this.interruptor4.setFrame(1);
+    this.barreiras[3].objeto.disableBody(true, true);
+    this.game.socket.emit("artefatos-publicar", this.game.sala, {
+      barreiras: this.barreiras.map((item) => item.objeto.visible),
+    });
+    if (!this.contando) {
+      this.tempo = 10;
+      this.contador = this.time.addEvent({
+        delay: 1000,
+        callback: this.contagem_regressiva4,
+        callbackScope: this,
+        loop: true,
+      });
+      this.contando = true;
+    }
+  }
+
+  contagem_regressiva4() {
+    this.tempo -= 1;
+    console.log(this.tempo);
+    if (this.tempo === 0) {
+      this.barreiras[3].objeto.enableBody(
+        true,
+        this.barreiras[3].x,
+        this.barreiras[3].y,
+        true,
+        true
+      );
+      this.game.socket.emit("artefatos-publicar", this.game.sala, {
+        barreiras: this.barreiras.map((item) => item.objeto.visible),
+      });
+      this.contador.destroy();
+      this.contando = false;
+    }
+  }
+
   abrirPorta() {
-    this.porta.setFrame(5);
-    this.game.scene.stop("fase3");
-    this.game.scene.start("encerramento");
-    this.game.socket.emit("cena-publicar", this.game.sala, "encerramento");
+    if (this.chaves === 0) {
+      this.chave.enableBody(true, 1505, 500, true, true);
+      this.jogador_1.stop();
+      this.barreiras[4].objeto.disableBody(true, true);
+      this.barreiras[5].objeto.disableBody(true, true);
+      this.game.socket.emit("artefatos-publicar", this.game.sala, {
+        barreiras: this.barreiras.map((item) => item.objeto.visible),
+      });
+    } else {
+      this.porta.setFrame(5);
+      this.game.scene.stop("fase2");
+      this.game.scene.start("fase3");
+      this.game.socket.emit("cena-publicar", this.game.sala, "fase3");
+    }
   }
 
   coletarChave() {
     this.chave.disableBody(true, true);
     this.metal_som.play();
-
-    /* Jogador 1 tem uma chave a mais */
+    this.mensagem.destroy();
+    this.invisivel.destroy();
     this.chaves += 1;
-
-    /* Avisa o outro jogador que coletou uma chave */
-    this.game.socket.emit("artefatos-publicar", { chaves: this.chaves });
   }
 }
