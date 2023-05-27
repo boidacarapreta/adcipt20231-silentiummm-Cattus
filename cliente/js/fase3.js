@@ -4,6 +4,8 @@ export default class fase3 extends Phaser.Scene {
     this.chaves = 0;
   }
 
+  // Esse é o mapa de encerramento
+
   preload() {
     // Mapa
     // Tilemap
@@ -47,26 +49,18 @@ export default class fase3 extends Phaser.Scene {
       }
     );
 
-    this.load.spritesheet("interruptor", "./assets/objetos/interruptor.png", {
-      frameWidth: 41,
-      frameHeight: 32,
-    });
-
-    this.load.spritesheet("barreira", "./assets/objetos/barreira.png", {
-      frameWidth: 64,
-      frameHeight: 64,
-    });
-
-    this.load.spritesheet("barreira2", "./assets/objetos/barreira2.png", {
-      frameWidth: 128,
-      frameHeight: 32,
-    });
-
     this.load.image("texto", "./assets/objetos/fala.png");
 
-    this.load.spritesheet("invisivel", "./assets/objetos/vazio.png", {
+    this.load.spritesheet("invisivel1", "./assets/objetos/vazio.png", {
       frameWidth: 32,
       frameHeight: 800,
+    });
+
+    // Monstro
+
+    this.load.spritesheet("monstro", "./assets/monstros/monstro1.png", {
+      frameWidth: 128,
+      frameHeight: 128,
     });
 
     // Botões
@@ -102,40 +96,16 @@ export default class fase3 extends Phaser.Scene {
   }
 
   create() {
-    this.game.fase = 2;
+    this.game.fase = 3;
+    this.chaves = 0;
 
     /* Trilha sonora */
     this.trilha = this.sound.add("trilha");
     this.trilha.loop = true;
     this.trilha.play();
     this.metal_som = this.sound.add("metal-som");
-    // Mapa2
 
-    // Tilemap
-    /* this.mapa2 = this.make.tilemap({
-      key: "mapa2",
-    });
-
-    this.tileset_camada1 = this.mapa2.addTilesetImage(
-      "fundo-camada1",
-      "fundo-camada1"
-    );
-
-    this.tileset_camada2 = this.mapa2.addTilesetImage(
-      "fundo-camada2",
-      "fundo-camada2"
-    );
-
-    this.tileset_camada3 = this.mapa2.addTilesetImage(
-      "fundo-camada3",
-      "fundo-camada3"
-    );
-
-    this.tileset_plataforma2 = this.mapa2.addTilesetImage(
-      "plataforma2",
-      "plataforma2"
-    );*/
-
+    // Mapa de Encerramento
     this.mapa3 = this.make.tilemap({
       key: "mapa3",
     });
@@ -145,41 +115,10 @@ export default class fase3 extends Phaser.Scene {
       "fundo-camada1"
     );
 
-
-    /* // Layer 0: fundo 2
-    this.fundo2 = this.mapa2.createLayer(
-      "fundo2",
-      [
-        this.tileset_camada1,
-        this.tileset_camada2,
-        this.tileset_camada3,
-        this.tileset_plataforma2,
-      ],
-      0,
-      0
-    );
-
-    // Layer 1: chão 2
-    this.plataforma2 = this.mapa2.createLayer(
-      "plataforma2",
-      [
-        this.tileset_camada1,
-        this.tileset_camada2,
-        this.tileset_camada3,
-        this.tileset_plataforma2,
-      ],
-      0,
-      0
-    );
-
-    */
-    
     // Layer 0: fundo 2
     this.fundo2 = this.mapa3.createLayer(
       "fundo2",
-      [
-        this.tileset_camada1,
-      ],
+      [this.tileset_camada1],
       0,
       0
     );
@@ -187,15 +126,13 @@ export default class fase3 extends Phaser.Scene {
     // Layer 1: chão 2
     this.plataforma2 = this.mapa3.createLayer(
       "plataforma2",
-      [
-        this.tileset_camada1,
-      ],
+      [this.tileset_camada1],
       0,
       0
     );
     // Porta e Chave
 
-    this.porta = this.physics.add.sprite(2350, 540, "porta");
+    this.porta = this.physics.add.sprite(2350, 510, "porta");
     this.porta.body.setAllowGravity(false);
     this.anims.create({
       key: "porta-animada",
@@ -207,30 +144,51 @@ export default class fase3 extends Phaser.Scene {
       repeat: -1,
     }),
       // Porta de Entrada
-
-      (this.porta_entrada = this.physics.add.sprite(100, 420, "porta_entrada"));
+      (this.porta_entrada = this.physics.add.sprite(150, 520, "porta_entrada"));
     this.porta_entrada.body.setAllowGravity(false);
 
     if (this.game.jogadores.primeiro === this.game.socket.id) {
       this.local = "gato-1";
-      this.jogador_1 = this.physics.add.sprite(100, 420, this.local);
+      this.jogador_1 = this.physics.add.sprite(150, 580, this.local);
       this.remoto = "gato-2";
-      this.jogador_2 = this.add.sprite(100, 420, this.remoto);
+      this.jogador_2 = this.add.sprite(150, 580, this.remoto);
     } else {
       this.remoto = "gato-1";
-      this.jogador_2 = this.add.sprite(100, 420, this.remoto);
+      this.jogador_2 = this.add.sprite(150, 580, this.remoto);
       this.local = "gato-2";
-      this.jogador_1 = this.physics.add.sprite(100, 420, this.local);
+      this.jogador_1 = this.physics.add.sprite(150, 580, this.local);
     }
 
     // Botao Invisivel para setar falas
-    this.invisivel = this.physics.add.sprite(2200, 550, "invisivel");
+    this.invisivel = this.physics.add.sprite(700, 550, "invisivel1");
     this.invisivel.body.setAllowGravity(false);
     this.invisivel.body.setImmovable(true);
 
-    this.chave = this.physics.add.sprite(50, 585, "chave");
-    this.chave.body.setAllowGravity(false);
-    this.chave.disableBody(false, true);
+    // Botão invisivel para desativar falas
+    this.invisivel2 = this.physics.add.sprite(800, 550, "invisivel1");
+    this.invisivel2.body.setAllowGravity(false);
+    this.invisivel2.body.setImmovable(true);
+
+    // Botão invisivel para desativar falas
+    this.invisivel3 = this.physics.add.sprite(600, 550, "invisivel1");
+    this.invisivel3.body.setAllowGravity(false);
+    this.invisivel3.body.setImmovable(true);
+
+    // monstro
+
+    this.monstro = this.physics.add.sprite(700, 540, "monstro");
+    this.monstro.body.setAllowGravity(false);
+    this.anims.create({
+      key: "monstro",
+      frames: this.anims.generateFrameNumbers("monstro", {
+        start: 0,
+        end: 4,
+      }),
+      frameRate: 4,
+      repeat: -1,
+    }),
+      this.monstro.anims.play("monstro", true);
+    this.monstro.body.setImmovable(true);
 
     // Mensagem
 
@@ -238,68 +196,9 @@ export default class fase3 extends Phaser.Scene {
     this.mensagem.body.setAllowGravity(false);
     this.mensagem.disableBody(false, true);
 
-    this.barreiras = [
-      {
-        x: 300,
-        y: 450,
-        imagem: "barreira",
-      },
-      {
-        x: 640,
-        y: 495,
-        imagem: "barreira2",
-      },
-      {
-        x: 940,
-        y: 575,
-        imagem: "barreira",
-      },
-      {
-        x: 1140,
-        y: 575,
-        imagem: "barreira",
-      },
-      {
-        x: 1260,
-        y: 475,
-        imagem: "barreira",
-      },
-      {
-        x: 1700,
-        y: 575,
-        imagem: "barreira",
-      },
-    ];
-    this.barreiras.forEach((item) => {
-      item.objeto = this.physics.add.sprite(item.x, item.y, item.imagem);
-      item.objeto.body.setAllowGravity(false);
-      item.objeto.body.setImmovable(true);
-      this.physics.add.collider(this.jogador_1, item.objeto, null, null, this);
-    });
-
-    // interruptor1
-    this.interruptor = this.physics.add.sprite(250, 470, "interruptor");
-    this.interruptor.setFrame(0);
-    this.interruptor.body.setAllowGravity(false);
-    this.interruptor.body.setImmovable(true);
-
-    // interruptor2
-    this.interruptor2 = this.physics.add.sprite(685, 375, "interruptor");
-    this.interruptor2.setFrame(0);
-    this.interruptor2.body.setAllowGravity(false);
-    this.interruptor2.body.setImmovable(true);
-
-    // interruptor3
-    this.interruptor3 = this.physics.add.sprite(685, 600, "interruptor");
-    this.interruptor3.setFrame(0);
-    this.interruptor3.body.setAllowGravity(false);
-    this.interruptor3.body.setImmovable(true);
-
-    // interruptor4
-    this.interruptor4 = this.physics.add.sprite(1650, 600, "interruptor");
-    this.interruptor4.setFrame(0);
-    this.interruptor4.body.setAllowGravity(false);
-    this.interruptor4.body.setImmovable(true);
+    this.chave = this.physics.add.sprite(50, 585, "chave");
+    this.chave.body.setAllowGravity(false);
+    this.chave.disableBody(false, true);
 
     // Personagem 1
     this.anims.create({
@@ -459,47 +358,38 @@ export default class fase3 extends Phaser.Scene {
       this
     );
 
-    /* Colisão entre jogador 1 e interruptor 1 */
-    this.physics.add.overlap(
-      this.jogador_1,
-      this.interruptor,
-      this.pressionarbotao,
-      null,
-      this
-    );
-
-    /* Colisão entre jogador 1 e interruptor 2 */
-    this.physics.add.overlap(
-      this.jogador_1,
-      this.interruptor2,
-      this.pressionarbotao2,
-      null,
-      this
-    );
-
-    /* Colisão entre jogador 1 e interruptor 3 */
-    this.physics.add.overlap(
-      this.jogador_1,
-      this.interruptor3,
-      this.pressionarbotao3,
-      null,
-      this
-    );
-
-    /* Colisão entre jogador 1 e interruptor 4 */
-    this.physics.add.overlap(
-      this.jogador_1,
-      this.interruptor4,
-      this.pressionarbotao4,
-      null,
-      this
-    );
-
     /* Colisão entre jogador 1 e porta */
     this.physics.add.overlap(
       this.jogador_1,
       this.porta,
       this.abrirPorta,
+      null,
+      this
+    );
+
+    // Colisão para ativar as falas
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.invisivel,
+      this.mensagem1,
+      null,
+      this
+    );
+
+    // Colisão para desativar as falas
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.invisivel2,
+      this.mensagem1_0,
+      null,
+      this
+    );
+
+    // Colisão para desativar as falas
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.invisivel3,
+      this.mensagem1_0,
       null,
       this
     );
@@ -529,29 +419,8 @@ export default class fase3 extends Phaser.Scene {
       }
     });
 
-    this.game.socket.on("artefatos-notificar", (artefatos) => {
-      if (artefatos.chave) {
-        this.chaves = artefatos.chave;
-      }
-      if (artefatos.barreiras) {
-        for (let i = 0; i < artefatos.barreiras.length; i++) {
-          if (artefatos.barreiras[i]) {
-            this.barreiras[i].objeto.enableBody(
-              false,
-              this.barreiras[i].x,
-              this.barreiras[i].y,
-              true,
-              true
-            );
-          } else {
-            this.barreiras[i].objeto.disableBody(true, true);
-          }
-        }
-      }
-    });
-
     this.game.socket.on("cena-notificar", (cena) => {
-      this.game.scene.stop("fase2");
+      this.game.scene.stop("fase3");
       this.game.scene.start(cena);
     });
   }
@@ -571,169 +440,25 @@ export default class fase3 extends Phaser.Scene {
     }
   }
 
-  pressionarbotao() {
-    this.interruptor.setFrame(1);
-    this.barreiras[0].objeto.disableBody(true, true);
-    this.game.socket.emit("artefatos-publicar", this.game.sala, {
-      barreiras: this.barreiras.map((item) => item.objeto.visible),
-    });
-
-    if (!this.contando) {
-      this.tempo = 3;
-      this.contador = this.time.addEvent({
-        delay: 1000,
-        callback: this.contagem_regressiva,
-        callbackScope: this,
-        loop: true,
-      });
-      this.contando = true;
+  mensagem1() {
+    if (this.mensagem.body) {
+      this.mensagem.enableBody(true, 700, 450, true, true);
+      this.chave.enableBody(true, 1505, 580, true, true);
     }
   }
-
-  contagem_regressiva() {
-    this.tempo -= 1;
-    console.log(this.tempo);
-    if (this.tempo === 0) {
-      this.barreiras[0].objeto.enableBody(
-        true,
-        this.barreiras[0].x,
-        this.barreiras[0].y,
-        true,
-        true
-      );
-      this.game.socket.emit("artefatos-publicar", this.game.sala, {
-        barreiras: this.barreiras.map((item) => item.objeto.visible),
-      });
-      this.contador.destroy();
-      this.contando = false;
-    }
-  }
-
-  pressionarbotao2() {
-    this.interruptor2.setFrame(1);
-    this.barreiras[1].objeto.disableBody(true, true);
-    this.game.socket.emit("artefatos-publicar", this.game.sala, {
-      barreiras: this.barreiras.map((item) => item.objeto.visible),
-    });
-    if (!this.contando) {
-      this.tempo = 5;
-      this.contador = this.time.addEvent({
-        delay: 1000,
-        callback: this.contagem_regressiva2,
-        callbackScope: this,
-        loop: true,
-      });
-      this.contando = true;
-    }
-  }
-
-  contagem_regressiva2() {
-    this.tempo -= 1;
-    console.log(this.tempo);
-    if (this.tempo === 0) {
-      this.barreiras[1].objeto.enableBody(
-        true,
-        this.barreiras[1].x,
-        this.barreiras[1].y,
-        true,
-        true
-      );
-      this.game.socket.emit("artefatos-publicar", this.game.sala, {
-        barreiras: this.barreiras.map((item) => item.objeto.visible),
-      });
-      this.contador.destroy();
-      this.contando = false;
-    }
-  }
-
-  pressionarbotao3() {
-    this.interruptor3.setFrame(1);
-    this.barreiras[2].objeto.disableBody(true, true);
-    this.game.socket.emit("artefatos-publicar", this.game.sala, {
-      barreiras: this.barreiras.map((item) => item.objeto.visible),
-    });
-    if (!this.contando) {
-      this.tempo = 3;
-      this.contador = this.time.addEvent({
-        delay: 1000,
-        callback: this.contagem_regressiva3,
-        callbackScope: this,
-        loop: true,
-      });
-      this.contando = true;
-    }
-  }
-
-  contagem_regressiva3() {
-    this.tempo -= 1;
-    console.log(this.tempo);
-    if (this.tempo === 0) {
-      this.barreiras[2].objeto.enableBody(
-        true,
-        this.barreiras[2].x,
-        this.barreiras[2].y,
-        true,
-        true
-      );
-      this.game.socket.emit("artefatos-publicar", this.game.sala, {
-        barreiras: this.barreiras.map((item) => item.objeto.visible),
-      });
-      this.contador.destroy();
-      this.contando = false;
-    }
-  }
-
-  pressionarbotao4() {
-    this.interruptor4.setFrame(1);
-    this.barreiras[3].objeto.disableBody(true, true);
-    this.game.socket.emit("artefatos-publicar", this.game.sala, {
-      barreiras: this.barreiras.map((item) => item.objeto.visible),
-    });
-    if (!this.contando) {
-      this.tempo = 10;
-      this.contador = this.time.addEvent({
-        delay: 1000,
-        callback: this.contagem_regressiva4,
-        callbackScope: this,
-        loop: true,
-      });
-      this.contando = true;
-    }
-  }
-
-  contagem_regressiva4() {
-    this.tempo -= 1;
-    console.log(this.tempo);
-    if (this.tempo === 0) {
-      this.barreiras[3].objeto.enableBody(
-        true,
-        this.barreiras[3].x,
-        this.barreiras[3].y,
-        true,
-        true
-      );
-      this.game.socket.emit("artefatos-publicar", this.game.sala, {
-        barreiras: this.barreiras.map((item) => item.objeto.visible),
-      });
-      this.contador.destroy();
-      this.contando = false;
+  mensagem1_0() {
+    if (this.mensagem.body) {
+      this.mensagem.disableBody(true, true);
     }
   }
 
   abrirPorta() {
     if (this.chaves === 0) {
-      this.chave.enableBody(true, 1505, 500, true, true);
-      this.jogador_1.stop();
-      this.barreiras[4].objeto.disableBody(true, true);
-      this.barreiras[5].objeto.disableBody(true, true);
-      this.game.socket.emit("artefatos-publicar", this.game.sala, {
-        barreiras: this.barreiras.map((item) => item.objeto.visible),
-      });
     } else {
       this.porta.setFrame(5);
-      this.game.scene.stop("fase2");
-      this.game.scene.start("fase3");
-      this.game.socket.emit("cena-publicar", this.game.sala, "fase3");
+      this.game.scene.stop("fase3");
+      this.game.scene.start("final");
+      this.game.socket.emit("cena-publicar", this.game.sala, "final");
     }
   }
 

@@ -27,7 +27,7 @@ export default class final extends Phaser.Scene {
       .on("pointerdown", () => {});
 
     this.start = this.add
-      .sprite(400, 80, "start", 0)
+      .sprite(400, 220, "start", 0)
       .setInteractive()
       .on("pointerdown", () => {
         this.start.setFrame(1);
@@ -40,7 +40,7 @@ export default class final extends Phaser.Scene {
         this.game.scene.start("abertura");
       });
 
-    this.texto = this.add.text(330, 40, "Obrigado por jogar...", {
+    this.texto = this.add.text(320, 180, "Voltar ao início.", {
       fill: "#ffffff",
     });
   }
