@@ -183,16 +183,17 @@ export default class fase2 extends Phaser.Scene {
       (this.porta_entrada = this.physics.add.sprite(100, 420, "porta_entrada"));
     this.porta_entrada.body.setAllowGravity(false);
 
+    // 100, 420
     if (this.game.jogadores.primeiro === this.game.socket.id) {
       this.local = "gato-1";
-      this.jogador_1 = this.physics.add.sprite(100, 420, this.local);
+      this.jogador_1 = this.physics.add.sprite(2350, 540, this.local);
       this.remoto = "gato-2";
-      this.jogador_2 = this.add.sprite(100, 420, this.remoto);
+      this.jogador_2 = this.add.sprite(2350, 540, this.remoto);
     } else {
       this.remoto = "gato-1";
-      this.jogador_2 = this.add.sprite(100, 420, this.remoto);
+      this.jogador_2 = this.add.sprite(2350, 540, this.remoto);
       this.local = "gato-2";
-      this.jogador_1 = this.physics.add.sprite(100, 420, this.local);
+      this.jogador_1 = this.physics.add.sprite(2350, 540, this.local);
     }
 
     // Botao Invisivel para setar falas
@@ -692,9 +693,10 @@ export default class fase2 extends Phaser.Scene {
     }
   }
 
+  // 1505, 500 - chave
   abrirPorta() {
     if (this.chaves === 0) {
-      this.chave.enableBody(true, 1505, 500, true, true);
+      this.chave.enableBody(true, 2200, 540, true, true);
       this.jogador_1.stop();
       this.barreiras[4].objeto.disableBody(true, true);
       this.barreiras[5].objeto.disableBody(true, true);

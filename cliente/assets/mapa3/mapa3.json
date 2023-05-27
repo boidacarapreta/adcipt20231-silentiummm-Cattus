@@ -40,11 +40,11 @@
         {
          "columns":93,
          "firstgid":1,
-         "image":"fundo-camada1.png",
+         "image":"fundo-camada6.png",
          "imageheight":563,
          "imagewidth":3000,
          "margin":0,
-         "name":"fundo-camada1",
+         "name":"fundo-camada6",
          "spacing":0,
          "tilecount":1581,
          "tileheight":32,
@@ -13024,7 +13024,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":true
+                         "value":false
                         }]
                 }, 
                 {
@@ -13033,7 +13033,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":true
+                         "value":false
                         }]
                 }, 
                 {
@@ -13042,7 +13042,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":true
+                         "value":false
                         }]
                 }, 
                 {
@@ -13051,7 +13051,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":true
+                         "value":false
                         }]
                 }, 
                 {
@@ -13060,7 +13060,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":true
+                         "value":false
                         }]
                 }, 
                 {

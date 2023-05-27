@@ -14,7 +14,7 @@ export default class fase3 extends Phaser.Scene {
     // Tilesets
 
     // Mapa 1
-    this.load.image("fundo-camada1", "./assets/mapa3/fundo-camada1.png");
+    this.load.image("fundo-camada6", "./assets/mapa3/fundo-camada6.png");
 
     // Corpo do Gato 1
     this.load.spritesheet("gato-1", "./assets/gato1/gato1-inteiro.png", {
@@ -110,15 +110,15 @@ export default class fase3 extends Phaser.Scene {
       key: "mapa3",
     });
 
-    this.tileset_camada1 = this.mapa3.addTilesetImage(
-      "fundo-camada1",
-      "fundo-camada1"
+    this.tileset_camada6 = this.mapa3.addTilesetImage(
+      "fundo-camada6",
+      "fundo-camada6"
     );
 
     // Layer 0: fundo 2
     this.fundo2 = this.mapa3.createLayer(
       "fundo2",
-      [this.tileset_camada1],
+      [this.tileset_camada6],
       0,
       0
     );
@@ -126,7 +126,7 @@ export default class fase3 extends Phaser.Scene {
     // Layer 1: chão 2
     this.plataforma2 = this.mapa3.createLayer(
       "plataforma2",
-      [this.tileset_camada1],
+      [this.tileset_camada6],
       0,
       0
     );
