@@ -49,7 +49,7 @@ export default class fase3 extends Phaser.Scene {
       }
     );
 
-    this.load.image("texto", "./assets/objetos/fala.png");
+    this.load.image("texto2", "./assets/objetos/falafinal.png");
 
     this.load.spritesheet("invisivel1", "./assets/objetos/vazio.png", {
       frameWidth: 32,
@@ -192,7 +192,7 @@ export default class fase3 extends Phaser.Scene {
 
     // Mensagem
 
-    this.mensagem = this.physics.add.sprite(2350, 440, "texto");
+    this.mensagem = this.physics.add.sprite(2350, 440, "texto2");
     this.mensagem.body.setAllowGravity(false);
     this.mensagem.disableBody(false, true);
 
