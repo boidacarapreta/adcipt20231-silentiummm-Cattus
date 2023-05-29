@@ -97,7 +97,7 @@ export default class salas extends Phaser.Scene {
         this.mensagem.destroy();
         this.game.jogadores = jogadores;
         this.game.scene.stop();
-        this.game.scene.start("fase4");
+        this.game.scene.start("fase1");
       } else if (jogadores.primeiro) {
         this.mensagem.setText("Aguardando segundo jogador...");
         
