@@ -214,7 +214,7 @@ export default class fase2 extends Phaser.Scene {
       {
         x: 300,
         y: 450,
-        iamgem: "barreira",
+        imagem: "barreira",
       },
       {
         x: 640,
@@ -566,7 +566,7 @@ export default class fase2 extends Phaser.Scene {
     this.tempo -= 1;
     console.log(this.tempo);
     if (this.tempo === 0) {
-      this.barreiras[0].enableBody(
+      this.barreiras[0].objeto.enableBody(
         true,
         this.barreiras[0].x,
         this.barreiras[0].y,
@@ -583,7 +583,7 @@ export default class fase2 extends Phaser.Scene {
 
   pressionarbotao2() {
     this.interruptor2.setFrame(1);
-    this.barreiras[1].disableBody(true, true);
+    this.barreiras[1].objeto.disableBody(true, true);
     this.game.socket.emit("artefatos-publicar", this.game.sala, {
       barreiras: this.barreiras.map((item) => item.objeto.visible),
     });
@@ -603,7 +603,7 @@ export default class fase2 extends Phaser.Scene {
     this.tempo -= 1;
     console.log(this.tempo);
     if (this.tempo === 0) {
-      this.barreiras[1].enableBody(
+      this.barreiras[1].objeto.enableBody(
         true,
         this.barreiras[1].x,
         this.barreiras[1].y,
@@ -620,7 +620,7 @@ export default class fase2 extends Phaser.Scene {
 
   pressionarbotao3() {
     this.interruptor3.setFrame(1);
-    this.barreiras[2].disableBody(true, true);
+    this.barreiras[2].objeto.disableBody(true, true);
     this.game.socket.emit("artefatos-publicar", this.game.sala, {
       barreiras: this.barreiras.map((item) => item.objeto.visible),
     });
@@ -640,7 +640,7 @@ export default class fase2 extends Phaser.Scene {
     this.tempo -= 1;
     console.log(this.tempo);
     if (this.tempo === 0) {
-      this.barreiras[2].enableBody(
+      this.barreiras[2].objeto.enableBody(
         true,
         this.barreiras[2].x,
         this.barreiras[2].y,
@@ -657,7 +657,7 @@ export default class fase2 extends Phaser.Scene {
 
   pressionarbotao4() {
     this.interruptor4.setFrame(1);
-    this.barreiras[3].disableBody(true, true);
+    this.barreiras[3].objeto.disableBody(true, true);
     this.game.socket.emit("artefatos-publicar", this.game.sala, {
       barreiras: this.barreiras.map((item) => item.objeto.visible),
     });
@@ -677,7 +677,7 @@ export default class fase2 extends Phaser.Scene {
     this.tempo -= 1;
     console.log(this.tempo);
     if (this.tempo === 0) {
-      this.barreiras[3].enableBody(
+      this.barreiras[3].objeto.enableBody(
         true,
         this.barreiras[3].x,
         this.barreiras[3].y,
@@ -696,8 +696,8 @@ export default class fase2 extends Phaser.Scene {
     if (this.chaves === 0) {
       this.chave.enableBody(true, 1505, 500, true, true);
       this.jogador_1.stop();
-      this.barreiras[4].disableBody(true, true);
-      this.barreiras[5].disableBody(true, true);
+      this.barreiras[4].objeto.disableBody(true, true);
+      this.barreiras[5].objeto.disableBody(true, true);
       this.game.socket.emit("artefatos-publicar", this.game.sala, {
         barreiras: this.barreiras.map((item) => item.objeto.visible),
       });
