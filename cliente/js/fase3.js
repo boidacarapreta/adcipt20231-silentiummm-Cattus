@@ -219,10 +219,10 @@ export default class fase3 extends Phaser.Scene {
     });
 
     // interruptor1
-    this.interruptor = this.physics.add.sprite(250, 560, "interruptor");
-    this.interruptor.setFrame(0);
-    this.interruptor.body.setAllowGravity(false);
-    this.interruptor.body.setImmovable(true);
+    this.interruptor1 = this.physics.add.sprite(250, 560, "interruptor");
+    this.interruptor1.setFrame(0);
+    this.interruptor1.body.setAllowGravity(false);
+    this.interruptor1.body.setImmovable(true);
 
     // interruptor2
     this.interruptor2 = this.physics.add.sprite(480, 280, "interruptor");
@@ -415,8 +415,8 @@ export default class fase3 extends Phaser.Scene {
     /* Colisão entre jogador 1 e interruptor 1 */
     this.physics.add.overlap(
       this.jogador_1,
-      this.interruptor,
-      this.pressionarbotao,
+      this.interruptor1,
+      this.pressionarbotao1,
       null,
       this
     );
@@ -504,9 +504,9 @@ export default class fase3 extends Phaser.Scene {
       if (artefatos.chave) {
         this.chaves = artefatos.chave;
       }
-      if (artefatos.barreiras) {
-        for (let i = 0; i < artefatos.barreiras.length; i++) {
-          if (artefatos.barreiras[i]) {
+      if (artefatos.barreiras1) {
+        for (let i = 0; i < artefatos.barreiras1.length; i++) {
+          if (artefatos.barreiras1[i]) {
             this.barreiras1[i].objeto.enableBody(
               false,
               this.barreiras1[i].x,
@@ -542,18 +542,18 @@ export default class fase3 extends Phaser.Scene {
     }
   }
 
-  pressionarbotao() {
-    this.interruptor.setFrame(1);
+  pressionarbotao1() {
+    this.interruptor1.setFrame(1);
     this.barreiras1[0].objeto.disableBody(true, true);
     this.game.socket.emit("artefatos-publicar", this.game.sala, {
-      barreiras: this.barreiras1.map((item) => item.objeto.visible),
+      barreiras1: this.barreiras1.map((item) => item.objeto.visible),
     });
 
     if (!this.contando) {
       this.tempo = 3;
       this.contador = this.time.addEvent({
         delay: 1000,
-        callback: this.contagem_regressiva,
+        callback: this.contagem_regressiva1,
         callbackScope: this,
         loop: true,
       });
@@ -561,7 +561,7 @@ export default class fase3 extends Phaser.Scene {
     }
   }
 
-  contagem_regressiva() {
+  contagem_regressiva1() {
     this.tempo -= 1;
     console.log(this.tempo);
     if (this.tempo === 0) {
@@ -573,7 +573,7 @@ export default class fase3 extends Phaser.Scene {
         true
       );
       this.game.socket.emit("artefatos-publicar", this.game.sala, {
-        barreiras: this.barreiras1.map((item) => item.objeto.visible),
+        barreiras1: this.barreiras1.map((item) => item.objeto.visible),
       });
       this.contador.destroy();
       this.contando = false;
@@ -584,7 +584,7 @@ export default class fase3 extends Phaser.Scene {
     this.interruptor2.setFrame(1);
     this.barreiras1[1].objeto.disableBody(true, true);
     this.game.socket.emit("artefatos-publicar", this.game.sala, {
-      barreiras: this.barreiras1.map((item) => item.objeto.visible),
+      barreiras1: this.barreiras1.map((item) => item.objeto.visible),
     });
     if (!this.contando) {
       this.tempo = 5;
@@ -610,7 +610,7 @@ export default class fase3 extends Phaser.Scene {
         true
       );
       this.game.socket.emit("artefatos-publicar", this.game.sala, {
-        barreiras: this.barreiras1.map((item) => item.objeto.visible),
+        barreiras1: this.barreiras1.map((item) => item.objeto.visible),
       });
       this.contador.destroy();
       this.contando = false;
@@ -621,7 +621,7 @@ export default class fase3 extends Phaser.Scene {
     this.interruptor3.setFrame(1);
     this.barreiras1[2].objeto.disableBody(true, true);
     this.game.socket.emit("artefatos-publicar", this.game.sala, {
-      barreiras: this.barreiras1.map((item) => item.objeto.visible),
+      barreiras1: this.barreiras1.map((item) => item.objeto.visible),
     });
     if (!this.contando) {
       this.tempo = 3;
@@ -647,7 +647,7 @@ export default class fase3 extends Phaser.Scene {
         true
       );
       this.game.socket.emit("artefatos-publicar", this.game.sala, {
-        barreiras: this.barreiras1.map((item) => item.objeto.visible),
+        barreiras1: this.barreiras1.map((item) => item.objeto.visible),
       });
       this.contador.destroy();
       this.contando = false;
@@ -658,7 +658,7 @@ export default class fase3 extends Phaser.Scene {
     this.interruptor4.setFrame(1);
     this.barreiras1[3].objeto.disableBody(true, true);
     this.game.socket.emit("artefatos-publicar", this.game.sala, {
-      barreiras: this.barreiras1.map((item) => item.objeto.visible),
+      barreiras1: this.barreiras1.map((item) => item.objeto.visible),
     });
     if (!this.contando) {
       this.tempo = 10;
@@ -684,7 +684,7 @@ export default class fase3 extends Phaser.Scene {
         true
       );
       this.game.socket.emit("artefatos-publicar", this.game.sala, {
-        barreiras: this.barreiras1.map((item) => item.objeto.visible),
+        barreiras1: this.barreiras1.map((item) => item.objeto.visible),
       });
       this.contador.destroy();
       this.contando = false;
@@ -695,7 +695,7 @@ export default class fase3 extends Phaser.Scene {
     this.interruptor5.setFrame(1);
     this.barreiras1[4].objeto.disableBody(true, true);
     this.game.socket.emit("artefatos-publicar", this.game.sala, {
-      barreiras: this.barreiras1.map((item) => item.objeto.visible),
+      barreiras1: this.barreiras1.map((item) => item.objeto.visible),
     });
     if (!this.contando) {
       this.tempo = 10;
@@ -721,7 +721,7 @@ export default class fase3 extends Phaser.Scene {
         true
       );
       this.game.socket.emit("artefatos-publicar", this.game.sala, {
-        barreiras: this.barreiras1.map((item) => item.objeto.visible),
+        barreiras1: this.barreiras1.map((item) => item.objeto.visible),
       });
       this.contador.destroy();
       this.contando = false;
@@ -732,7 +732,7 @@ export default class fase3 extends Phaser.Scene {
     this.interruptor6.setFrame(1);
     this.barreiras1[5].objeto.disableBody(true, true);
     this.game.socket.emit("artefatos-publicar", this.game.sala, {
-      barreiras: this.barreiras1.map((item) => item.objeto.visible),
+      barreiras1: this.barreiras1.map((item) => item.objeto.visible),
     });
     if (!this.contando) {
       this.tempo = 10;
@@ -758,7 +758,7 @@ export default class fase3 extends Phaser.Scene {
         true
       );
       this.game.socket.emit("artefatos-publicar", this.game.sala, {
-        barreiras: this.barreiras1.map((item) => item.objeto.visible),
+        barreiras1: this.barreiras1.map((item) => item.objeto.visible),
       });
       this.contador.destroy();
       this.contando = false;
