@@ -201,9 +201,8 @@ export default class fase2 extends Phaser.Scene {
     this.invisivel.body.setAllowGravity(false);
     this.invisivel.body.setImmovable(true);
 
-    this.chave = this.physics.add.sprite(50, 585, "chave");
+    this.chave = this.physics.add.sprite(1505, 500, "chave");
     this.chave.body.setAllowGravity(false);
-    this.chave.disableBody(false, true);
 
     // Mensagem
 
@@ -696,8 +695,8 @@ export default class fase2 extends Phaser.Scene {
   // 1505, 500 - chave
   abrirPorta() {
     if (this.chaves === 0) {
-      this.chave.enableBody(true, 1505, 500, true, true);
       this.jogador_1.stop();
+      this.mensagem.enableBody(true, 2350, 400, true, true);
       this.barreiras[4].objeto.disableBody(true, true);
       this.barreiras[5].objeto.disableBody(true, true);
       this.game.socket.emit("artefatos-publicar", this.game.sala, {

@@ -308,8 +308,8 @@ export default class fase1 extends Phaser.Scene {
 
     this.chave = [
       {
-        x: 50,
-        y: 570,
+        x: 1550,
+        y: 400,
         objeto: undefined,
       },
     ];
