@@ -4,17 +4,15 @@ export default class fase3 extends Phaser.Scene {
     this.chaves = 0;
   }
 
-  // Esse é o mapa de encerramento
-
   preload() {
     // Mapa
     // Tilemap
-    this.load.tilemapTiledJSON("mapa3", "./assets/mapa3/mapa3.json");
+    this.load.tilemapTiledJSON("mapa4", "./assets/mapa4/mapa4.json");
 
     // Tilesets
 
     // Mapa 1
-    this.load.image("fundo-camada6", "./assets/mapa3/fundo-camada6.png");
+    this.load.image("fundo-camada5", "./assets/mapa4/fundo-camada5.png");
 
     // Corpo do Gato 1
     this.load.spritesheet("gato-1", "./assets/gato1/gato1-inteiro.png", {
@@ -49,18 +47,26 @@ export default class fase3 extends Phaser.Scene {
       }
     );
 
-    this.load.image("texto2", "./assets/objetos/falafinal.png");
-
-    this.load.spritesheet("invisivel1", "./assets/objetos/vazio.png", {
-      frameWidth: 32,
-      frameHeight: 800,
+    this.load.spritesheet("interruptor", "./assets/objetos/interruptor.png", {
+      frameWidth: 41,
+      frameHeight: 32,
     });
 
-    // Monstro
+    this.load.spritesheet("arvore", "./assets/objetos/arvore.png", {
+      frameWidth: 105,
+      frameHeight: 224,
+    });
 
-    this.load.spritesheet("monstro", "./assets/monstros/monstro1.png", {
-      frameWidth: 128,
-      frameHeight: 128,
+    this.load.spritesheet("barreira2", "./assets/objetos/arvore.png", {
+      frameWidth: 105,
+      frameHeight: 224,
+    });
+
+    this.load.image("texto", "./assets/objetos/fala.png");
+
+    this.load.spritesheet("invisivel", "./assets/objetos/vazio.png", {
+      frameWidth: 32,
+      frameHeight: 800,
     });
 
     // Botões
@@ -97,42 +103,43 @@ export default class fase3 extends Phaser.Scene {
 
   create() {
     this.game.fase = 3;
-    this.chaves = 0;
 
     /* Trilha sonora */
     this.trilha = this.sound.add("trilha");
     this.trilha.loop = true;
     this.trilha.play();
     this.metal_som = this.sound.add("metal-som");
+    // Mapa2
 
-    // Mapa de Encerramento
-    this.mapa3 = this.make.tilemap({
-      key: "mapa3",
+    // Tilemap
+    this.mapa4 = this.make.tilemap({
+      key: "mapa4",
     });
 
-    this.tileset_camada6 = this.mapa3.addTilesetImage(
-      "fundo-camada6",
-      "fundo-camada6"
+    this.tileset_camada5 = this.mapa4.addTilesetImage(
+      "fundo-camada5",
+      "fundo-camada5"
     );
 
     // Layer 0: fundo 2
-    this.fundo2 = this.mapa3.createLayer(
+    this.fundo2 = this.mapa4.createLayer(
       "fundo2",
-      [this.tileset_camada6],
+      [this.tileset_camada5],
       0,
       0
     );
 
     // Layer 1: chão 2
-    this.plataforma2 = this.mapa3.createLayer(
+    this.plataforma2 = this.mapa4.createLayer(
       "plataforma2",
-      [this.tileset_camada6],
+      [this.tileset_camada5],
       0,
       0
     );
+
     // Porta e Chave
 
-    this.porta = this.physics.add.sprite(2350, 510, "porta");
+    this.porta = this.physics.add.sprite(2350, 500, "porta");
     this.porta.body.setAllowGravity(false);
     this.anims.create({
       key: "porta-animada",
@@ -144,61 +151,108 @@ export default class fase3 extends Phaser.Scene {
       repeat: -1,
     }),
       // Porta de Entrada
-      (this.porta_entrada = this.physics.add.sprite(150, 520, "porta_entrada"));
+
+      (this.porta_entrada = this.physics.add.sprite(100, 500, "porta_entrada"));
+    this.porta_entrada.body.setAllowGravity(false);
+
+    this.porta_entrada = this.physics.add.sprite(100, 220, "porta_entrada");
     this.porta_entrada.body.setAllowGravity(false);
 
     if (this.game.jogadores.primeiro === this.game.socket.id) {
       this.local = "gato-1";
-      this.jogador_1 = this.physics.add.sprite(150, 580, this.local);
+      this.jogador_1 = this.physics.add.sprite(100, 500, this.local);
       this.remoto = "gato-2";
-      this.jogador_2 = this.add.sprite(150, 580, this.remoto);
+      this.jogador_2 = this.add.sprite(100, 220, this.remoto);
     } else {
       this.remoto = "gato-1";
-      this.jogador_2 = this.add.sprite(150, 580, this.remoto);
+      this.jogador_2 = this.add.sprite(100, 500, this.remoto);
       this.local = "gato-2";
-      this.jogador_1 = this.physics.add.sprite(150, 580, this.local);
+      this.jogador_1 = this.physics.add.sprite(100, 220, this.local);
     }
 
-    // Botao Invisivel para setar falas
-    this.invisivel = this.physics.add.sprite(700, 550, "invisivel1");
-    this.invisivel.body.setAllowGravity(false);
-    this.invisivel.body.setImmovable(true);
-
-    // Botão invisivel para desativar falas
-    this.invisivel2 = this.physics.add.sprite(800, 550, "invisivel1");
-    this.invisivel2.body.setAllowGravity(false);
-    this.invisivel2.body.setImmovable(true);
-
-    // Botão invisivel para desativar falas
-    this.invisivel3 = this.physics.add.sprite(600, 550, "invisivel1");
-    this.invisivel3.body.setAllowGravity(false);
-    this.invisivel3.body.setImmovable(true);
-
-    // monstro
-
-    this.monstro = this.physics.add.sprite(700, 540, "monstro");
-    this.monstro.body.setAllowGravity(false);
-    this.anims.create({
-      key: "monstro",
-      frames: this.anims.generateFrameNumbers("monstro", {
-        start: 0,
-        end: 4,
-      }),
-      frameRate: 4,
-      repeat: -1,
-    }),
-      this.monstro.anims.play("monstro", true);
-    this.monstro.body.setImmovable(true);
+    this.chave = this.physics.add.sprite(2200, 570, "chave");
+    this.chave.body.setAllowGravity(false);
 
     // Mensagem
 
-    this.mensagem = this.physics.add.sprite(2350, 440, "texto2");
+    this.mensagem = this.physics.add.sprite(2350, 440, "texto");
     this.mensagem.body.setAllowGravity(false);
     this.mensagem.disableBody(false, true);
 
-    this.chave = this.physics.add.sprite(50, 585, "chave");
-    this.chave.body.setAllowGravity(false);
-    this.chave.disableBody(false, true);
+    this.barreiras1 = [
+      {
+        x: 300,
+        y: 180,
+        imagem: "arvore",
+      },
+      {
+        x: 640,
+        y: 470,
+        imagem: "arvore",
+      },
+      {
+        x: 940,
+        y: 180,
+        imagem: "arvore",
+      },
+      {
+        x: 1140,
+        y: 470,
+        imagem: "arvore",
+      },
+      {
+        x: 1260,
+        y: 180,
+        imagem: "arvore",
+      },
+      {
+        x: 1700,
+        y: 180,
+        imagem: "arvore",
+      },
+    ];
+    this.barreiras1.forEach((item) => {
+      item.objeto = this.physics.add.sprite(item.x, item.y, item.imagem);
+      item.objeto.body.setAllowGravity(false);
+      item.objeto.body.setImmovable(true);
+      this.physics.add.collider(this.jogador_1, item.objeto, null, null, this);
+    });
+
+    // interruptor1
+    this.interruptor = this.physics.add.sprite(250, 560, "interruptor");
+    this.interruptor.setFrame(0);
+    this.interruptor.body.setAllowGravity(false);
+    this.interruptor.body.setImmovable(true);
+
+    // interruptor2
+    this.interruptor2 = this.physics.add.sprite(480, 280, "interruptor");
+    this.interruptor2.setFrame(0);
+    this.interruptor2.body.setAllowGravity(false);
+    this.interruptor2.body.setImmovable(true);
+
+    // interruptor3
+    this.interruptor3 = this.physics.add.sprite(685, 560, "interruptor");
+    this.interruptor3.setFrame(0);
+    this.interruptor3.body.setAllowGravity(false);
+    this.interruptor3.body.setImmovable(true);
+
+    // interruptor4
+    this.interruptor4 = this.physics.add.sprite(1200, 280, "interruptor");
+    this.interruptor4.setFrame(0);
+    this.interruptor4.body.setAllowGravity(false);
+    this.interruptor4.body.setImmovable(true);
+
+    // interruptor5
+    this.interruptor5 = this.physics.add.sprite(1400, 560, "interruptor");
+    this.interruptor5.setFrame(0);
+    this.interruptor5.body.setAllowGravity(false);
+    this.interruptor5.body.setImmovable(true);
+
+    // interruptor6
+    this.interruptor6 = this.physics.add.sprite(1650, 280, "interruptor");
+    this.interruptor6.setFrame(0);
+    this.interruptor6.body.setAllowGravity(false);
+    this.interruptor6.body.setImmovable(true);
 
     // Personagem 1
     this.anims.create({
@@ -358,38 +412,65 @@ export default class fase3 extends Phaser.Scene {
       this
     );
 
+    /* Colisão entre jogador 1 e interruptor 1 */
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.interruptor,
+      this.pressionarbotao,
+      null,
+      this
+    );
+
+    /* Colisão entre jogador 1 e interruptor 2 */
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.interruptor2,
+      this.pressionarbotao2,
+      null,
+      this
+    );
+
+    /* Colisão entre jogador 1 e interruptor 3 */
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.interruptor3,
+      this.pressionarbotao3,
+      null,
+      this
+    );
+
+    /* Colisão entre jogador 1 e interruptor 4 */
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.interruptor4,
+      this.pressionarbotao4,
+      null,
+      this
+    );
+
+    /* Colisão entre jogador 1 e interruptor 5 */
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.interruptor5,
+      this.pressionarbotao5,
+      null,
+      this
+    );
+
+    /* Colisão entre jogador 1 e interruptor 6 */
+    this.physics.add.overlap(
+      this.jogador_1,
+      this.interruptor6,
+      this.pressionarbotao6,
+      null,
+      this
+    );
+
     /* Colisão entre jogador 1 e porta */
     this.physics.add.overlap(
       this.jogador_1,
       this.porta,
       this.abrirPorta,
-      null,
-      this
-    );
-
-    // Colisão para ativar as falas
-    this.physics.add.overlap(
-      this.jogador_1,
-      this.invisivel,
-      this.mensagem1,
-      null,
-      this
-    );
-
-    // Colisão para desativar as falas
-    this.physics.add.overlap(
-      this.jogador_1,
-      this.invisivel2,
-      this.mensagem1_0,
-      null,
-      this
-    );
-
-    // Colisão para desativar as falas
-    this.physics.add.overlap(
-      this.jogador_1,
-      this.invisivel3,
-      this.mensagem1_0,
       null,
       this
     );
@@ -419,6 +500,27 @@ export default class fase3 extends Phaser.Scene {
       }
     });
 
+    this.game.socket.on("artefatos-notificar", (artefatos) => {
+      if (artefatos.chave) {
+        this.chaves = artefatos.chave;
+      }
+      if (artefatos.barreiras) {
+        for (let i = 0; i < artefatos.barreiras.length; i++) {
+          if (artefatos.barreiras[i]) {
+            this.barreiras1[i].objeto.enableBody(
+              false,
+              this.barreiras1[i].x,
+              this.barreiras1[i].y,
+              true,
+              true
+            );
+          } else {
+            this.barreiras1[i].objeto.disableBody(true, true);
+          }
+        }
+      }
+    });
+
     this.game.socket.on("cena-notificar", (cena) => {
       this.game.scene.stop("fase3");
       this.game.scene.start(cena);
@@ -440,15 +542,226 @@ export default class fase3 extends Phaser.Scene {
     }
   }
 
-  mensagem1() {
-    if (this.mensagem.body) {
-      this.mensagem.enableBody(true, 700, 450, true, true);
-      this.chave.enableBody(true, 1505, 580, true, true);
+  pressionarbotao() {
+    this.interruptor.setFrame(1);
+    this.barreiras1[0].objeto.disableBody(true, true);
+    this.game.socket.emit("artefatos-publicar", this.game.sala, {
+      barreiras: this.barreiras1.map((item) => item.objeto.visible),
+    });
+
+    if (!this.contando) {
+      this.tempo = 3;
+      this.contador = this.time.addEvent({
+        delay: 1000,
+        callback: this.contagem_regressiva,
+        callbackScope: this,
+        loop: true,
+      });
+      this.contando = true;
     }
   }
-  mensagem1_0() {
-    if (this.mensagem.body) {
-      this.mensagem.disableBody(true, true);
+
+  contagem_regressiva() {
+    this.tempo -= 1;
+    console.log(this.tempo);
+    if (this.tempo === 0) {
+      this.barreiras1[0].objeto.enableBody(
+        true,
+        this.barreiras1[0].x,
+        this.barreiras1[0].y,
+        true,
+        true
+      );
+      this.game.socket.emit("artefatos-publicar", this.game.sala, {
+        barreiras: this.barreiras1.map((item) => item.objeto.visible),
+      });
+      this.contador.destroy();
+      this.contando = false;
+    }
+  }
+
+  pressionarbotao2() {
+    this.interruptor2.setFrame(1);
+    this.barreiras1[1].objeto.disableBody(true, true);
+    this.game.socket.emit("artefatos-publicar", this.game.sala, {
+      barreiras: this.barreiras1.map((item) => item.objeto.visible),
+    });
+    if (!this.contando) {
+      this.tempo = 5;
+      this.contador = this.time.addEvent({
+        delay: 1000,
+        callback: this.contagem_regressiva2,
+        callbackScope: this,
+        loop: true,
+      });
+      this.contando = true;
+    }
+  }
+
+  contagem_regressiva2() {
+    this.tempo -= 1;
+    console.log(this.tempo);
+    if (this.tempo === 0) {
+      this.barreiras1[1].objeto.enableBody(
+        true,
+        this.barreiras1[1].x,
+        this.barreiras1[1].y,
+        true,
+        true
+      );
+      this.game.socket.emit("artefatos-publicar", this.game.sala, {
+        barreiras: this.barreiras1.map((item) => item.objeto.visible),
+      });
+      this.contador.destroy();
+      this.contando = false;
+    }
+  }
+
+  pressionarbotao3() {
+    this.interruptor3.setFrame(1);
+    this.barreiras1[2].objeto.disableBody(true, true);
+    this.game.socket.emit("artefatos-publicar", this.game.sala, {
+      barreiras: this.barreiras1.map((item) => item.objeto.visible),
+    });
+    if (!this.contando) {
+      this.tempo = 3;
+      this.contador = this.time.addEvent({
+        delay: 1000,
+        callback: this.contagem_regressiva3,
+        callbackScope: this,
+        loop: true,
+      });
+      this.contando = true;
+    }
+  }
+
+  contagem_regressiva3() {
+    this.tempo -= 1;
+    console.log(this.tempo);
+    if (this.tempo === 0) {
+      this.barreiras1[2].objeto.enableBody(
+        true,
+        this.barreiras1[2].x,
+        this.barreiras1[2].y,
+        true,
+        true
+      );
+      this.game.socket.emit("artefatos-publicar", this.game.sala, {
+        barreiras: this.barreiras1.map((item) => item.objeto.visible),
+      });
+      this.contador.destroy();
+      this.contando = false;
+    }
+  }
+
+  pressionarbotao4() {
+    this.interruptor4.setFrame(1);
+    this.barreiras1[3].objeto.disableBody(true, true);
+    this.game.socket.emit("artefatos-publicar", this.game.sala, {
+      barreiras: this.barreiras1.map((item) => item.objeto.visible),
+    });
+    if (!this.contando) {
+      this.tempo = 10;
+      this.contador = this.time.addEvent({
+        delay: 1000,
+        callback: this.contagem_regressiva4,
+        callbackScope: this,
+        loop: true,
+      });
+      this.contando = true;
+    }
+  }
+
+  contagem_regressiva4() {
+    this.tempo -= 1;
+    console.log(this.tempo);
+    if (this.tempo === 0) {
+      this.barreiras1[3].objeto.enableBody(
+        true,
+        this.barreiras1[3].x,
+        this.barreiras1[3].y,
+        true,
+        true
+      );
+      this.game.socket.emit("artefatos-publicar", this.game.sala, {
+        barreiras: this.barreiras1.map((item) => item.objeto.visible),
+      });
+      this.contador.destroy();
+      this.contando = false;
+    }
+  }
+
+  pressionarbotao5() {
+    this.interruptor5.setFrame(1);
+    this.barreiras1[4].objeto.disableBody(true, true);
+    this.game.socket.emit("artefatos-publicar", this.game.sala, {
+      barreiras: this.barreiras1.map((item) => item.objeto.visible),
+    });
+    if (!this.contando) {
+      this.tempo = 10;
+      this.contador = this.time.addEvent({
+        delay: 1000,
+        callback: this.contagem_regressiva5,
+        callbackScope: this,
+        loop: true,
+      });
+      this.contando = true;
+    }
+  }
+
+  contagem_regressiva5() {
+    this.tempo -= 1;
+    console.log(this.tempo);
+    if (this.tempo === 0) {
+      this.barreiras1[4].objeto.enableBody(
+        true,
+        this.barreiras1[4].x,
+        this.barreiras1[4].y,
+        true,
+        true
+      );
+      this.game.socket.emit("artefatos-publicar", this.game.sala, {
+        barreiras: this.barreiras1.map((item) => item.objeto.visible),
+      });
+      this.contador.destroy();
+      this.contando = false;
+    }
+  }
+
+  pressionarbotao6() {
+    this.interruptor6.setFrame(1);
+    this.barreiras1[5].objeto.disableBody(true, true);
+    this.game.socket.emit("artefatos-publicar", this.game.sala, {
+      barreiras: this.barreiras1.map((item) => item.objeto.visible),
+    });
+    if (!this.contando) {
+      this.tempo = 10;
+      this.contador = this.time.addEvent({
+        delay: 1000,
+        callback: this.contagem_regressiva6,
+        callbackScope: this,
+        loop: true,
+      });
+      this.contando = true;
+    }
+  }
+
+  contagem_regressiva6() {
+    this.tempo -= 1;
+    console.log(this.tempo);
+    if (this.tempo === 0) {
+      this.barreiras1[5].objeto.enableBody(
+        true,
+        this.barreiras1[5].x,
+        this.barreiras1[5].y,
+        true,
+        true
+      );
+      this.game.socket.emit("artefatos-publicar", this.game.sala, {
+        barreiras: this.barreiras1.map((item) => item.objeto.visible),
+      });
+      this.contador.destroy();
+      this.contando = false;
     }
   }
 
@@ -457,16 +770,14 @@ export default class fase3 extends Phaser.Scene {
     } else {
       this.porta.setFrame(5);
       this.game.scene.stop("fase3");
-      this.game.scene.start("final");
-      this.game.socket.emit("cena-publicar", this.game.sala, "final");
+      this.game.scene.start("fase4");
+      this.game.socket.emit("cena-publicar", this.game.sala, "fase4");
     }
   }
 
   coletarChave() {
     this.chave.disableBody(true, true);
     this.metal_som.play();
-    this.mensagem.destroy();
-    this.invisivel.destroy();
     this.chaves += 1;
   }
 }
