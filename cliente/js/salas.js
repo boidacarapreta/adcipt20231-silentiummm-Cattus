@@ -3,7 +3,7 @@ export default class salas extends Phaser.Scene {
     super("salas");
   }
 
-  preload() {}
+  preload() { }
 
   create() {
     this.mensagem = this.add.text(100, 75, "Escolha uma sala para entrar:", {
@@ -100,12 +100,11 @@ export default class salas extends Phaser.Scene {
         this.game.scene.start("fase1");
       } else if (jogadores.primeiro) {
         this.mensagem.setText("Aguardando segundo jogador...");
-        
+
         /* Captura de áudio */
         navigator.mediaDevices
           .getUserMedia({ video: false, audio: true })
           .then((stream) => {
-            console.log(stream);
             this.game.midias = stream;
           })
           .catch((error) => console.log(error));
