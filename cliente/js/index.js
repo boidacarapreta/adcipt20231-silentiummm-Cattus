@@ -17,14 +17,17 @@ class Game extends Phaser.Game {
 
       iceServers = [
         {
-          urls: "stun:ifsc.digital",
+          urls: 'stun:ifsc.digital'
         },
         {
-          urls: "turns:ifsc.digital",
-          username: "Cattus",
-          credential: "Cattus",
+          urls: 'turns:ifsc.digital',
+          username: 'adcipt',
+          credential: 'adcipt20231'
         },
-      ];
+        {
+          urls: 'stun:stun.l.google.com:19302'
+        }
+      ]
     } else {
       this.socket = io();
 
